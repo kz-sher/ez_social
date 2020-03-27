@@ -5,7 +5,6 @@ import { Grid } from '@material-ui/core';
 import NavBar from './components/NavBar';
 import WelcomeGrid from './components/WelcomeGrid';
 import SignUpGrid from './components/signup/SignUpGrid';
-import SignUpGridFormik from './components/signup/SignUpGridFormik';
 import SignInGrid from './components/signin/SignInGrid';
 
 import { Switch, Router, Route } from 'react-router';
@@ -22,7 +21,6 @@ function App() {
           <Switch>
             <Route exact path="/" component={WelcomeGrid} />
             <Route path="/signup" component={SignUpGrid} />
-            <Route path="/signupformik" component={SignUpGridFormik} />
             <Route path="/signin" component={SignInGrid} />
           </Switch>
         </Grid>

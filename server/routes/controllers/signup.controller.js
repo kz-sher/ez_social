@@ -1,29 +1,22 @@
-const Validator = require('validator');
 const isEmpty = require('lodash/isEmpty');
 const AuthService = require('../../services/auth.service')    
 const User = require('../../db/models/user.model')   
+const Yup = require('yup')
 
-function validateInput({username, password, confirmPassword, country}){
-    let errors = {}
-
-    if (!username){
-        errors.username = "This field is required."
-    }
-    if (!password){
-        errors.password = "This field is required."
-    }
-    if (!confirmPassword){
-        errors.confirmPassword = "This field is required."
-    }
-    if (!Validator.equals(password, confirmPassword)){
-        errors.confirmPassword = "Passwords must match."
-    }
-    if (!country){
-        errors.country = "This field is required."
-    }
-    
-    return errors;
+const formatYupError = err => {
+    const errors = {}
+    err.inner.forEach(e => {
+      errors[e.path] = e.message;
+    })
+    return errors
 }
+  
+const validator = Yup.object().shape({
+    username: Yup.string().min(4).required(),
+    password: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Only alphabets and numbers are accepted').min(6).required(),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required(),
+    country: Yup.string().required()
+})
 
 async function isUsernameTaken (usernameQuery) {
     try {
@@ -38,9 +31,14 @@ async function isUsernameTaken (usernameQuery) {
 }
 
 exports.signUp = async function (req, res) {
-    
-    // Validate fields
-    const errors = validateInput(req.body);
+
+    let errors = {}
+
+    try {
+        await validator.validate(req.body, { abortEarly: false });
+      } catch (err) {
+        errors = formatYupError(err);
+      }
 
     // Check if username is taken when username field passed pre-input validation
     try{

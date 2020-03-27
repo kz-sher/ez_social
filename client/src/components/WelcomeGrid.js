@@ -23,12 +23,6 @@ const WelcomeGrid = () => {
 
             <Grid container item justify="center" alignItems="center" spacing={3}>
                 <Grid item xs={10} sm={6}>
-                    <Button component={Link} to="/signupformik" variant="contained" fullWidth>Sign Up Formik</Button>
-                </Grid>
-            </Grid>
-
-            <Grid container item justify="center" alignItems="center" spacing={3}>
-                <Grid item xs={10} sm={6}>
                     <Button component={Link} to="/signin" variant="contained" fullWidth>Sign In</Button>
                 </Grid>
             </Grid>

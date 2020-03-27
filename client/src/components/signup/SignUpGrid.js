@@ -1,200 +1,214 @@
-import React, { Component, isValidElement } from 'react'
-import { Grid, Button, Typography, Divider, TextField, MenuItem, CircularProgress, InputAdornment } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import CheckIcon from '@material-ui/icons/Check';
+import React from 'react';
+import { withFormik, Form, Field} from 'formik';
+import * as Yup from 'yup';
 import '../grid.css';
 import countries from '../../data/countries';
-import { map, sortBy, isEqual} from 'lodash';
+import { map, sortBy} from 'lodash';
 import axios from 'axios'
-import {FieldCheck, validateInput} from '../../utils/signup.validation';
 
-const initState = {
-    username: '',
-    password: '',
-    confirmPassword: '',
-    country: '',
-    errors: {},
-    isLoading: false,
-    isFocused: false,
+import { Grid, Button, Typography, Divider, TextField, MenuItem, Snackbar, Icon, IconButton, InputAdornment, LinearProgress} from '@material-ui/core';
+import {Visibility, VisibilityOff} from '@material-ui/icons';
+import MuiAlert from '@material-ui/lab/Alert';
 
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default class SignUpGrid extends Component {
+const InnerSignUpGrid = ({
+    values,
+    errors,
+    touched,
+    isSubmitting,
+}) => {
 
-    constructor(props){
-        super(props);
-        this.state = initState
-
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this.onFocus = this.onFocus.bind(this);
+    const [showPassword, setShowPassword] = React.useState(false)
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
     }
 
-    reset(){
-        this.setState(initState);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onFocus(e) {
-        this.setState({ isFocused: true });
-    }
-
-    onBlur(e){
-        console.log(e.target.name)
-        let check = FieldCheck(this.state, e.target.value, e.target.name);
-        let {errors, username} = this.state;
-        this.setState({ 
-            errors: {...this.state.errors, ...check},
-            isFocused: false
-        });
-
-        // if((e.target.name === 'username') && ((typeof errors.username) === "undefined") && (username.length >= 4)){
-        //     console.log((e.target.name === 'username') && ((typeof errors.username) === "undefined") && (username.length >= 4))
-            
-        //     axios.post('http://localhost:4000/api/users', { 'username': e.target.value }).then(
-        //         (res) => { 
-        //             console.log(res)
-        //             this.setState({'usernameNotFound': res.data.flag })},
-        //         ({response}) => { console.log(response.data.message)}
-        //     );
-        // }
-        // else{
-        //     this.setState({'usernameNotFound': undefined })
-        // }
-    }
-
-    isValid(){
-        const { errors, isValid } = validateInput(this.state);
-
-        if(!isValid){
-            this.setState({ errors });
-        }
-
-        return isValid;
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-        
-        if(this.isValid()){
-            console.log(true)
-            this.setState({ errors: {}, isLoading: true });
-            axios.post('http://localhost:4000/api/signup', this.state).then(
-                () => { 
-                    this.reset();
-                    this.setState({ success: true });
-                },
-                ({ response }) => { this.setState({ errors: response.data}) }
-            );
-        }
-    }
-
-    render() {
-        const { errors, isLoading, signInSuccess, isFocused, usernameNotFound} = this.state;
-        const countryOptions = map(sortBy(countries), (val, key) =>
-            <MenuItem key={key} value={val}>
-                {val}
-            </MenuItem>
-        );
-        return (
+    return ( 
+        <>  
             <Grid className="wlc-container" container item direction="row" justify="center" alignItems="center" xs={11} sm={6} spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="h5">Sign Up</Typography> 
-                    <Typography variant="caption"> &nbsp; </Typography> 
-                    <Divider variant="middle" />
+                    <Grid item xs={12}>
+                        <Typography variant="h5">Sign Up</Typography> 
+                        <Typography variant="caption"> &nbsp; </Typography> 
+                        <Divider variant="middle" />
+                        {isSubmitting && <LinearProgress />}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Form>
+                            <Grid container item justify="center" alignItems="center" spacing={3}>
+                                <Grid item xs={12} sm={7}>
+                                    <Field
+                                    type="input"
+                                    name="username"
+                                    label="Username"
+                                    variant="outlined"
+                                    as={TextField} 
+                                    error={!!touched.username && !!errors.username}
+                                    helperText={!!touched.username && !!errors.username && errors.username}
+                                    fullWidth/>
+                                </Grid>
+                            </Grid>
+
+                            <Grid container item justify="center" alignItems="center" spacing={3}>
+                                <Grid item xs={12} sm={7}>
+                                    <Field
+                                    type={showPassword ? "text" : "password" }
+                                    name="password"
+                                    label="Password"
+                                    variant="outlined"
+                                    as={TextField} 
+                                    error={!!touched.password && !!errors.password}
+                                    helperText={!!touched.password && !!errors.password && errors.password}
+                                    InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                          </InputAdornment>
+                                        ),
+                                    }}
+                                    fullWidth/>
+                                </Grid>
+                            </Grid>
+
+                            <Grid container item justify="center" alignItems="center" spacing={3}>
+                                <Grid item xs={12} sm={7}>
+                                    <Field
+                                    type={showPassword ? "text" : "password" }
+                                    name="confirmPassword"
+                                    label="Password Confirmation"
+                                    variant="outlined"
+                                    as={TextField}
+                                    error={!!touched.confirmPassword && !!errors.confirmPassword}
+                                    helperText={!!touched.confirmPassword && !!errors.confirmPassword && errors.confirmPassword} 
+                                    InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                          </InputAdornment>
+                                        ),
+                                    }}
+                                    fullWidth/>
+                                </Grid>
+                            </Grid>
+
+                            <Grid container item justify="center" alignItems="center" spacing={3}>
+                                <Grid item xs={12} sm={7}>
+                                    <Field
+                                    select
+                                    name="country"
+                                    label="Country"
+                                    variant="outlined"
+                                    as={TextField}    
+                                    error={!!touched.country && !!errors.country}
+                                    helperText={!!touched.country && !!errors.country && errors.country}                 
+                                    fullWidth>
+                                        <MenuItem value='' disabled selected>
+                                            Choose your country
+                                        </MenuItem>
+                                        {map(sortBy(countries), (val, key) =>
+                                            <MenuItem key={key} value={val}>
+                                                {val}
+                                            </MenuItem>)}
+                                    </Field>
+                                </Grid>
+                            </Grid>
+
+                            <Grid container item justify="center" alignItems="center" spacing={3}>
+                                <Grid item>
+                                    <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<Icon>send</Icon>}
+                                    disabled={isSubmitting}>
+                                        Submit
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Form>
+                    </Grid>
                 </Grid>
-                {(signInSuccess) &&
-                    <Alert iconMapping={{ success: <CheckCircleOutlineIcon fontSize="inherit" /> }}>
-                        You have successfully created your account!
-                    </Alert>}
-
-                <Grid item xs={12}>
-                    <form noValidate autoComplete="off" onSubmit={this.onSubmit}>
-                        <Grid container item justify="center" alignItems="center" spacing={3}>
-                            <Grid item xs={12} sm={4}>
-                                <TextField
-                                  label="Username"
-                                  error={errors.username? true: false}
-                                  helperText={errors.username}
-                                  name="username"
-                                  value={this.state.username}
-                                  onChange={this.onChange}
-                                  onBlur={this.onBlur}
-                                  onFocus={this.onFocus}
-                                  fullWidth
-                                  autoFocus
-                                  InputProps={{
-                                    endAdornment: (
-                                      <InputAdornment position="end">
-                                        {((!isFocused) && ((typeof errors.username) === "undefined") && ((typeof usernameNotFound) === "undefined")) && <CircularProgress size="1rem" />}
-                                        {(!isFocused && usernameNotFound) && <CheckIcon />}
-                                      </InputAdornment>
-                                    )
-                                  }} 
-                                  />
-                            </Grid>
-                        </Grid>
-
-                        <Grid container item justify="center" alignItems="center" spacing={3}>
-                            <Grid item xs={12} sm={4}>
-                                <TextField
-                                  label="Password"
-                                  error={errors.password? true: false}
-                                  helperText={errors.password}
-                                  name="password"
-                                  value={this.state.password}
-                                  onChange={this.onChange}
-                                  onBlur={this.onBlur}
-                                  type="password"
-                                  fullWidth />
-                            </Grid>
-                        </Grid>
-
-                        <Grid container item justify="center" alignItems="center" spacing={3}>
-                            <Grid item xs={12} sm={4}>
-                                <TextField
-                                  label="Confirm Password"
-                                  error={errors.confirmPassword? true: false}
-                                  helperText={errors.confirmPassword}
-                                  name="confirmPassword"
-                                  value={this.state.confirmPassword}
-                                  onChange={this.onChange}
-                                  onBlur={this.onBlur}
-                                  type="password"
-                                  fullWidth />
-                            </Grid>
-                        </Grid>
-
-                        <Grid container item justify="center" alignItems="center" spacing={3}>
-                            <Grid item xs={12} sm={4}>
-                                <TextField
-                                  label="Country"
-                                  error={errors.country? true: false}
-                                  helperText={errors.country}
-                                  name="country"
-                                  value={this.state.country}
-                                  onChange={this.onChange}
-                                  onBlur={this.onBlur}
-                                  select
-                                  fullWidth>
-                                    {countryOptions}
-                                </TextField>
-                            </Grid>
-                        </Grid>
-
-                        <Grid container item justify="center" alignItems="center" spacing={3}>
-                            <Grid item>
-                                <Button disabled={isLoading} type="submit" variant="contained" color="primary">Submit</Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Grid>
-            </Grid>
-        )
-    }
+                <Snackbar
+                  open={values.alert.open}
+                  autoHideDuration={6000}
+                  onClose={values.alert.handleClose}
+                  >
+                    <Alert onClose={values.alert.handleClose} severity={values.alert.type}>
+                        {values.alert.msg}
+                    </Alert>
+                </Snackbar>
+            </>
+     );
 }
+const initialValues = {
+        username: '',
+        password: '',
+        confirmPassword: '',
+        country: '',
+        alert: {
+            open: false,
+            type: '',
+            msg: '',
+            handleClose: () => {}
+        }
+}
+
+const SignUpGrid = withFormik({
+    mapPropsToValues: () => {
+        return initialValues
+    },
+    validationSchema: Yup.object().shape({
+        username: Yup.string().min(4).required(),
+        password: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Only alphabets and numbers are accepted').min(6).required(),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required(),
+        country: Yup.string().required()
+    }),
+    handleSubmit: async (values, {resetForm, setFieldValue, setValues, setErrors, setSubmitting}) => {
+        await axios.post('http://localhost:4000/api/signup', values).then(
+                ({ data }) => { 
+                    if(data.ACC_OK){
+                        resetForm();
+                        setValues({
+                            ...initialValues,
+                            alert: {
+                                open: true,
+                                type: 'success',
+                                msg: 'Account created successfully!',
+                                handleClose: () => {setFieldValue('alert.open', false)}
+                            }
+                        })
+                    } 
+                    else{
+                        setErrors(data.formErrors);
+                    }
+                },
+                ({ response }) => {
+                    setValues({
+                        ...values,
+                        alert: {
+                            open: true,
+                            type: 'error',
+                            msg: response.data.message,
+                            handleClose: () => {setFieldValue('alert.open', false)}
+                        }
+                    })
+                }
+            );
+        setSubmitting(false)
+    }
+})(InnerSignUpGrid);
+ 
+export default SignUpGrid;

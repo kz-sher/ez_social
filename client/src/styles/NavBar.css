@@ -1,0 +1,10 @@
+.navbar-title {
+    text-decoration: none;
+    color: white;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.navbar-icon {
+    margin-right: 1em;
+}

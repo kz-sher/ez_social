@@ -1,11 +1,9 @@
 import React from 'react';
-import { Grid, Button, Typography, Divider } from '@material-ui/core';
-import './grid.css';
-
 import { Link } from 'react-router-dom';
+import { Grid, Button, Typography, Divider } from '@material-ui/core';
 
 
-const WelcomeGrid = () => {
+const Welcome = () => {
     return ( 
         <Grid className="wlc-container" container item direction="row" justify="center" alignItems="center" xs={11} sm={6} spacing={3}>
             
@@ -17,13 +15,13 @@ const WelcomeGrid = () => {
             
             <Grid container item justify="center" alignItems="center" spacing={3}>
                 <Grid item xs={10} sm={6}>
-                    <Button component={Link} to="/signup" variant="contained" fullWidth>Sign Up</Button>
+                    <Button component={Link} to="/signup" size="large" variant="contained" fullWidth>Sign Up</Button>
                 </Grid>
             </Grid>
 
             <Grid container item justify="center" alignItems="center" spacing={3}>
                 <Grid item xs={10} sm={6}>
-                    <Button component={Link} to="/signin" variant="contained" fullWidth>Sign In</Button>
+                    <Button component={Link} to="/signin" size="large" variant="contained" fullWidth>Sign In</Button>
                 </Grid>
             </Grid>
 
@@ -35,4 +33,4 @@ const WelcomeGrid = () => {
      );
 }
  
-export default WelcomeGrid;
+export default Welcome;

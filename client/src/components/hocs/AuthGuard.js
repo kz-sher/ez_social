@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const AuthGuard = (reverseAuthDir) => (OriginalComponent) => {
+const AuthGuard = (AuthDir) => (OriginalComponent) => {
     class OriginalComponentWithAuthGuard extends Component{
         
         checkAuth(){
             const { isLoggedIn, token, history } = this.props
-            const authCheck = !reverseAuthDir ? !(isLoggedIn && token) : (isLoggedIn && token)
+            const authCheck = AuthDir !== 'reverse' ? !(isLoggedIn && token) : (isLoggedIn && token)
             if(authCheck){
                 history.push('/')
             }

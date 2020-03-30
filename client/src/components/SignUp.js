@@ -10,25 +10,27 @@ import * as Yup from 'yup';
 import { map, sortBy} from 'lodash';
 import axios from 'axios';
 
-import { Grid, Button, Typography, Divider, TextField, MenuItem, Icon, IconButton, InputAdornment, LinearProgress} from '@material-ui/core';
+import { Grid, Button, Typography, Divider, TextField, MenuItem, IconButton, InputAdornment, LinearProgress, Box} from '@material-ui/core';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons'
 
 const SignUp = ({
     errors,
     touched,
     isSubmitting,
 }) => {
-
     const [showPassword, setShowPassword] = React.useState(false)
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     }
 
     return ( 
-            <Grid className="wlc-container" container item direction="row" justify="center" alignItems="center" xs={11} sm={6} spacing={3}>
+        <Grid container item justify="center" alignItems="center" xs={11} sm={6} spacing={0}>
+            <Grid className="main-container" container item direction="row" justify="center" alignItems="center" xs={12} sm={12} spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h5">Sign Up</Typography> 
-                    <Typography variant="caption"> &nbsp; </Typography> 
+                    <Typography variant="h5">Account Creation Form</Typography> 
+                    <Typography variant="caption">Please enter the following details based on the instruction</Typography> 
                     <Divider variant="middle" />
                     {isSubmitting && <LinearProgress />}
                 </Grid>
@@ -127,9 +129,7 @@ const SignUp = ({
                                 <Button
                                 type="submit"
                                 variant="contained"
-                                color="primary"
                                 size="large"
-                                endIcon={<Icon>send</Icon>}
                                 disabled={isSubmitting}>
                                     Submit
                                 </Button>
@@ -138,6 +138,36 @@ const SignUp = ({
                     </Form>
                 </Grid>
             </Grid>
+            <Grid container item justify="center" alignItems="center" xs={12}>
+                <Box mt={3}>
+                    <Typography variant="body2" color="textSecondary">or sign up with</Typography>
+                </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Box mt={3}>
+                    <a className="social-media-link" href="/api/oauth/google">
+                        <Button
+                            size="large"
+                            variant="contained"
+                            fullWidth
+                            color="secondary"
+                            startIcon={<FontAwesomeIcon icon={faGoogle}/>}>
+                                Google
+                        </Button>
+                    </a>
+                </Box>
+                <Box mt={3} mb={3}>
+                    <Button
+                        size="large"
+                        variant="contained"
+                        fullWidth
+                        color="primary"
+                        startIcon={<FontAwesomeIcon icon={faFacebook}/>}>
+                            Facebook
+                    </Button>
+                </Box>
+            </Grid>
+        </Grid>
      );
 }
 const initialValues = {
@@ -165,7 +195,7 @@ const FormikForSignUp = withFormik({
                         resetForm();
                         openAlert({
                             status: 'success',
-                            msg: 'Account created successfully!'
+                            msg: data.message
                         })
                     } 
                     else{

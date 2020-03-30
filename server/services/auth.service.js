@@ -1,29 +1,48 @@
-const { getUserByUsername } = require('../utils/user.helper');
+if (process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
 
-exports.isUsernameExist = async usernameQuery => {
-    try {
-        var user = await getUserByUsername(usernameQuery);
-        if(user)
-            return { answer: true, user: user};
-        else
-            return { answer: false, user: null};
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const Yup = require('yup');
+const User = require('../models/user.model');
+
+const registerValidator = Yup.object().shape({
+    username: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Only alphabets and numbers are accepted').min(4).required(),
+    password: Yup.string().matches(/^[a-zA-Z0-9]+$/, 'Only alphabets and numbers are accepted').min(6).required(),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required(),
+    country: Yup.string().required()
+})
+
+const signToken = (data) => {
+    // Create token for the user
+    return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
+}
+
+async function addNewUser(userData){
+
+    // Hash password with salt
+    try{
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
+        userData.password = hashedPassword;
     } catch (err) {
-        throw Error(err.message);
+        throw Error('Failed to secure credentials');
     }
-}
 
-exports.authenticateToken = async (req, res, next) => {
-    const authHeader = req.header['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    
-    // 401 error for unauthorization if no token provided
-    if(token == null) return res.sendStatus(401);
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-
-        // 403 error for forbidden access because of some reasons (in this case token is not valid anymore)
-        if(err) return res.sendStatus(403)
-        req.user = user
-        next();
+    // Create user and save to database
+    let user = new User({
+        method: "local",
+        local: {
+            username: userData.username,
+            password: userData.password,
+            country: userData.country
+        }
     });
+    await user.save()
+        .then(() => {})
+        .catch(err => {
+            throw Error('Failed to add user');
+        });
 }
+
+module.exports = { registerValidator, addNewUser, signToken }

@@ -5,7 +5,7 @@ import { Grid, Button, Typography, Divider, Box } from '@material-ui/core';
 const NotFound = () => {
     const bull = <span> • </span>;
     return ( 
-        <Grid className="wlc-container" container item direction="row" justify="center" alignItems="center" xs={11} sm={6} spacing={3}>
+        <Grid className="main-container" container item direction="row" justify="center" alignItems="center" xs={11} sm={6} spacing={3}>
             
             <Grid item xs={12} sm={12}>
                 <Typography variant="h3"> 

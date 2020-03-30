@@ -6,7 +6,7 @@ import * as actions from '../actions';
 import '../styles/NavBar.css';
 
 import { AppBar, Toolbar, Typography, Box, IconButton} from '@material-ui/core';
-import { AccountCircle, ExitToApp, AddComment } from '@material-ui/icons';
+import { Language, AccountCircle, ExitToApp, AddComment } from '@material-ui/icons';
 
 const NavBar = ({ isLoggedIn, signOut}) => {
     let history = useHistory();
@@ -20,13 +20,15 @@ const NavBar = ({ isLoggedIn, signOut}) => {
         <div className="navbar-container">
             <AppBar position="static">
                 <Toolbar>
+                    <Language />
+                    <span> &nbsp;&nbsp; </span>
                     <Typography
                         className="navbar-title"
                         variant="h6"
                         component={Link}
                         to="/">
                         <Box fontWeight={900}>
-                            EZ FORUM
+                            EZ SOCIAL
                         </Box>
                     </Typography>
                     {isLoggedIn && 

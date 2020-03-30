@@ -1,4 +1,10 @@
-import { OPEN_ALERT, CLOSE_ALERT, SIGN_IN, SIGN_OUT } from './types'
+import { 
+    OPEN_ALERT, 
+    CLOSE_ALERT, 
+    SIGN_IN, 
+    SIGN_OUT, 
+    DATA_INITIALIZED
+ } from './types'
 
 /**
  * Action Creator -> Actions -> Dispatch -> Middlewares -> Reducers
@@ -21,7 +27,7 @@ export const closeAlert = () => {
         }
 }
 
-export const signIn = (token) => {
+export const signIn = token => {
     return dispatch => {
             dispatch({
                 type: SIGN_IN,
@@ -34,8 +40,17 @@ export const signIn = (token) => {
 export const signOut = () => {
     return dispatch => {
             dispatch({
-                type: SIGN_OUT,
+                type: SIGN_OUT
             })
             localStorage.removeItem('access-token')
+        }
+}
+
+export const setInitUserType = isLoggedIn => {
+    return dispatch => {
+            dispatch({
+                type: DATA_INITIALIZED,
+                isLoggedIn
+            })
         }
 }

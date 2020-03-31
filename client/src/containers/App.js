@@ -4,12 +4,11 @@ import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
-import reducers from '../reducers';
 import axios from 'axios';
 
 import '../styles/App.css';
 
-import Loading from '../components/Loading';
+import reducers from '../reducers';
 import Main from '../components/Main';
 
 const history = createBrowserHistory();
@@ -25,10 +24,7 @@ function App() {
       }  
     }, applyMiddleware(reduxThunk))}>
       <Router history={history}>
-        <div className="main">
-          <Loading />        
-          <Main />
-        </div>
+        <Main />
       </Router>
     </Provider>
   );

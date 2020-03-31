@@ -1,26 +1,40 @@
+/* App */
 .main {
-  text-align: center;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.container {
-  margin-top: 3em;
+/* NavBar */
+.navbar-title {
+  text-decoration: none;
+  color: white;
   flex-grow: 1;
+  text-align: left;
 }
 
+.navbar-icon {
+  margin-right: 1em;
+}
+
+/* SignIn/Up, Dashboard */
 .main-container {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
 }
 
+/* Loading */
 .init-loader-container {
   z-index: 100;
-  position: absolute;
-  height: 100%;
-  background: white;
+  background-color: white !important;
 }
 
+.init-loader {
+  background-color: white !important;
+}
+
+
+/* SignIn/Up */
 .create-account-now-link{
   text-decoration: none;
 }
@@ -29,3 +43,4 @@
   text-decoration: none;
   color: white;
 }
+

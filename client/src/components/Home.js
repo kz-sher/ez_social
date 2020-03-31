@@ -5,11 +5,11 @@ import * as actions from '../actions';
 import SignIn from './SignIn';
 import DashBoard from './DashBoard';
 
-const Home = ({ isLoggedIn, location, history, signIn}) => {
+const Home = ({ isLoggedIn, location, history, setToken}) => {
     useEffect(() => {
         var query = queryString.parse(location.search);
         if (query.token) {
-          signIn(query.token);
+          setToken(query.token);
           history.push('/');
        }
     })

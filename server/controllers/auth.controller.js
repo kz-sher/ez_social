@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production'){
 
 const { isUserExist } = require('../services/user.service');
 const { formatYupError } = require('../utils/error.helper');
-const { registerValidator, signToken, addNewUser } = require('../services/auth.service');
+const { registerValidator, generateAccessToken, addNewUser } = require('../services/auth.service');
 const jwt = require('jsonwebtoken');
 const { isEmpty } = require('lodash');
 
@@ -47,14 +47,14 @@ const signUpByLocal = async function (req, res) {
 }
 
 const signInByLocal = (req, res) => {
-    const token = signToken({ id: req.body.username });
+    const token = generateAccessToken({ id: req.body.username });
     res.status(200).json({ token });
 }
 
 const oauthGoogle = (req, res) => {
     console.log(req.user)
     console.log("a" + req.body)
-    const token = signToken({ id: req.user.id})
+    const token = generateAccessToken({ id: req.user.id})
     res.redirect('/?token=' + token);
 }
 
@@ -68,7 +68,7 @@ const authenticateToken = async (req, res, next) => {
     if(!token) return res.sendStatus(400);
 
     await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if(err) return res.status(400).json({ message: 'Invalid/expired token given' });
+        if(err) return res.status(400).json({ message: 'Token expired/invalidated' });
         req.user = user;
         next();
     });

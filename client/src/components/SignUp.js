@@ -12,27 +12,38 @@ import axios from 'axios';
 
 import { Grid, Button, Typography, Divider, TextField, MenuItem, IconButton, InputAdornment, LinearProgress, Box} from '@material-ui/core';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons'
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: '3em',
+    },
+}));
 
 const SignUp = ({
     errors,
     touched,
     isSubmitting,
 }) => {
+
+    const classes = useStyles();
     const [showPassword, setShowPassword] = React.useState(false)
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     }
 
     return ( 
-        <Grid container item justify="center" alignItems="center" xs={11} sm={6} spacing={0}>
+        <Grid className={classes.root} container item justify="center" alignItems="center" xs={11} sm={6} spacing={0}>
             <Grid className="main-container" container item direction="row" justify="center" alignItems="center" xs={12} sm={12} spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h5">Account Creation Form</Typography> 
-                    <Typography variant="caption">Please enter the following details based on the instruction</Typography> 
-                    <Divider variant="middle" />
-                    {isSubmitting && <LinearProgress />}
+                    <Box textAlign="center">
+                        <Typography variant="h5">Account Creation Form</Typography> 
+                        <Typography variant="caption">Please enter the following details based on the instruction</Typography> 
+                        {isSubmitting && <LinearProgress />}
+                        <Divider variant="middle" />
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <Form>

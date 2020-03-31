@@ -3,7 +3,8 @@ import {
     CLOSE_ALERT, 
     SIGN_IN, 
     SIGN_OUT, 
-    DATA_INITIALIZED
+    DATA_INITIALIZED,
+    DONE_LOADING
  } from './types'
 
 /**
@@ -27,7 +28,7 @@ export const closeAlert = () => {
         }
 }
 
-export const signIn = token => {
+export const setToken = token => {
     return dispatch => {
             dispatch({
                 type: SIGN_IN,
@@ -37,7 +38,7 @@ export const signIn = token => {
         }
 }
 
-export const signOut = () => {
+export const removeToken = () => {
     return dispatch => {
             dispatch({
                 type: SIGN_OUT
@@ -46,11 +47,18 @@ export const signOut = () => {
         }
 }
 
-export const setInitUserType = isLoggedIn => {
+export const initDone = () => {
     return dispatch => {
             dispatch({
-                type: DATA_INITIALIZED,
-                isLoggedIn
+                type: DATA_INITIALIZED
+            })
+        }
+}
+
+export const loadDone = () => {
+    return dispatch => {
+            dispatch({
+                type: DONE_LOADING
             })
         }
 }

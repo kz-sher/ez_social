@@ -10,29 +10,38 @@ import axios from 'axios';
 
 import { Grid, Button, Typography, TextField, IconButton, InputAdornment, LinearProgress,Box} from '@material-ui/core';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons'
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: '3em',
+    },
+}));
 
 const SignIn = ({
     errors,
     touched,
     isSubmitting,
 }) => {
+
+    const classes = useStyles();
     const [showPassword, setShowPassword] = React.useState(false)
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     }
 
     return ( 
-        <Grid container item justify="center" alignItems="center" xs={11} sm={6} spacing={0}>
+        <Grid className={classes.root} container item justify="center" alignItems="center" xs={11} sm={6} spacing={0}>
             <Grid item xs={10}>
-                <Box mb={3} fontWeight={600}>
+                <Box textAlign="center" mb={3} fontWeight={600}>
                     <Typography variant="h4">Share Thoughts, Stay Connected!</Typography> 
                 </Box>
             </Grid>
             
             <Grid item xs={12}>
-                <Box mb={5}>
+                <Box textAlign="center" mb={5}>
                     <Typography variant="body1">join us now to meet people around the world without stepping out from your house</Typography> 
                 </Box>
                 <Box mb={0}>
@@ -155,11 +164,11 @@ const FormikForSignIn = withFormik({
         username: Yup.string().required(),
         password: Yup.string().required(),
     }),
-    handleSubmit: async (values, {props, setErrors, setSubmitting}) => {
-        const { signIn, openAlert } = props;
+    handleSubmit: async (values, {props, setSubmitting}) => {
+        const { setToken, openAlert } = props;
         await axios.post('http://localhost:4000/api/signin', values).then(
             ({ data }) => {
-                signIn(data.token);
+                setToken(data.token);
             },
             ({ response })=>{
                 console.log(response)

@@ -3,16 +3,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import '../styles/NavBar.css';
-
-import { AppBar, Toolbar, Typography, Box, IconButton} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Box, IconButton } from '@material-ui/core';
 import { Language, AccountCircle, ExitToApp, AddComment } from '@material-ui/icons';
 
-const NavBar = ({ isLoggedIn, signOut}) => {
+const NavBar = ({ isLoggedIn, removeToken}) => {
     let history = useHistory();
     
     const handleSignOut = () => {
-        signOut();
+        removeToken();
         history.push('/');
     }
 
@@ -31,7 +29,7 @@ const NavBar = ({ isLoggedIn, signOut}) => {
                             EZ SOCIAL
                         </Box>
                     </Typography>
-                    {isLoggedIn && 
+                    {isLoggedIn &&
                         [<div className="navbar-icon" key="posts">
                             <IconButton
                                 edge="end"
@@ -55,7 +53,8 @@ const NavBar = ({ isLoggedIn, signOut}) => {
                                 onClick={handleSignOut}>
                                 <ExitToApp />
                             </IconButton>
-                        </div>]}
+                        </div>]
+                    }
                 </Toolbar>
             </AppBar>
         </div>

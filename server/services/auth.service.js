@@ -14,9 +14,9 @@ const registerValidator = Yup.object().shape({
     country: Yup.string().required()
 })
 
-const signToken = (data) => {
+const generateAccessToken = (data) => {
     // Create token for the user
-    return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
+    return jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.TOKEN_LIFETIME });
 }
 
 async function addNewUser(userData){
@@ -45,4 +45,4 @@ async function addNewUser(userData){
         });
 }
 
-module.exports = { registerValidator, addNewUser, signToken }
+module.exports = { registerValidator, addNewUser, generateAccessToken }

@@ -6,9 +6,8 @@ import * as actions from '../actions';
 import { AppBar, Toolbar, Typography, Box, IconButton } from '@material-ui/core';
 import { Language, AccountCircle, ExitToApp, AddComment } from '@material-ui/icons';
 
-const NavBar = ({ isLoggedIn, removeToken}) => {
+const NavBar = ({ isLoggedIn, removeToken, setPostModalDisplay}) => {
     let history = useHistory();
-    
     const handleSignOut = () => {
         removeToken();
         history.push('/');
@@ -34,7 +33,7 @@ const NavBar = ({ isLoggedIn, removeToken}) => {
                             <IconButton
                                 edge="end"
                                 color="inherit"
-                                onClick={handleSignOut}>
+                                onClick={setPostModalDisplay}>
                                 <AddComment />
                             </IconButton>
                         </div>,

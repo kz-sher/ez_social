@@ -5,8 +5,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const PORT = 4000;
-const router = require('./routes/routes.js');
-const { initializePassport } = require('./config/passport-config');
+const { AuthRouter, PostRouter } = require('./routes');
+const { initializePassport } = require('./middleware/passport');
 
 // Create passport as authentication middleware
 initializePassport(passport);
@@ -22,7 +22,8 @@ connection.once('open', function() {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
-app.use('/', router);
+app.use('/api/auth', AuthRouter);
+app.use('/api/post', PostRouter);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });

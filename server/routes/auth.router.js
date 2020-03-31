@@ -5,17 +5,21 @@ const router = express.Router();
 const AuthController = require('../controllers/auth.controller')
 const { handlePassportError } = require('../utils/error.helper');
 
-router.post('/vtoken', AuthController.authenticateToken, (_, res)=> res.sendStatus(200));
-router.post('/api/signup', AuthController.signUpByLocal)
-router.post('/api/signin', passport.authenticate('local', { 
+// router.post('/vtoken', AuthController.authenticateToken, (_, res)=> res.sendStatus(200));
+router.post('/vtoken', passport.authenticate('jwt', { 
+  session: false,
+  failWithError: true
+}), (_, res)=> res.sendStatus(200), handlePassportError('jwt'))
+router.post('/signup', AuthController.signUpByLocal)
+router.post('/signin', passport.authenticate('local', { 
     session: false,
     failWithError: true
-}), AuthController.signInByLocal, handlePassportError)
-router.get('/api/oauth/google',
+}), AuthController.signInByLocal, handlePassportError('local'))
+router.get('/oauth/google',
       passport.authenticate('google', { 
         scope: ['https://www.googleapis.com/auth/userinfo.profile'] 
       }));
-router.get('/api/oauth/google/callback', 
+router.get('/oauth/google/callback', 
       passport.authenticate('google', { 
         failureRedirect: '/',
         session: false

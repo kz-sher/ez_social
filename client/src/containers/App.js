@@ -9,7 +9,7 @@ import axios from 'axios';
 import '../styles/App.css';
 
 import reducers from '../reducers';
-import Main from '../components/Main';
+import Main from './Main';
 
 const history = createBrowserHistory();
 const token = localStorage.getItem('access-token');

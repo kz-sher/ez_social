@@ -4,3 +4,7 @@ export const SIGN_IN = "SIGN_IN";
 export const SIGN_OUT = "SIGN_OUT";
 export const DATA_INITIALIZED = "DATA_INITIALIZED";
 export const DONE_LOADING = "DONE_LOADING";
+export const OPEN_POST_MODAL = "OPEN_POST_MODAL";
+export const CLOSE_POST_MODAL = "CLOSE_POST_MODAL";
+export const ADD_NEW_POST = "ADD_NEW_POST";
+export const GET_POSTS = "GET_POSTS";

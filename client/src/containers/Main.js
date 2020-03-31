@@ -7,13 +7,13 @@ import * as actions from '../actions';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import NavBar from './NavBar';
-import GlobalAlert from './GlobalAlert';
+import NavBar from '../components/NavBar';
+import GlobalAlert from '../components/GlobalAlert';
 import Home from './Home';
 import SignUp from './SignUp';
 import NotFound from './NotFound';
-import AuthGuard from './hocs/AuthGuard';
-import Loading from './Loading';
+import AuthGuard from '../components/hocs/AuthGuard';
+import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +29,7 @@ function Main({ isInitialized, initDone, loadDone, openAlert, setToken, removeTo
     useEffect(() => {
 
         async function verifyToken(){
-          await axios.post('http://localhost:4000/vtoken').then(
+          await axios.post('http://localhost:4000/api/auth/vtoken').then(
             () => {
                 setToken(localStorage.getItem('access-token'));
             },
@@ -61,6 +61,7 @@ function Main({ isInitialized, initDone, loadDone, openAlert, setToken, removeTo
                 <Grid className={classes.root} container justify="center" alignItems="flex-start">
                     <Switch>
                     <Route exact path="/" component={Home} />
+                    <Route exact path="/test" component={NotFound} />
                     <Route path="/signup" component={AuthGuard("reverse")(SignUp)} />
                     <Route component={NotFound} />
                     </Switch>

@@ -34,6 +34,7 @@ async function addNewUser(userData){
         method: "local",
         local: {
             username: userData.username,
+            displayName: userData.username,
             password: userData.password,
             country: userData.country
         }

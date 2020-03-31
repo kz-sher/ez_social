@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-let UserSchema = new Schema({
+
+const UserSchema = new Schema({
     method: {
         type: String,
         enum: ['local', 'google'],
@@ -8,6 +9,9 @@ let UserSchema = new Schema({
     },
     local: {
         username: {
+            type: String
+        },
+        displayName: {
             type: String
         },
         password: {
@@ -21,9 +25,12 @@ let UserSchema = new Schema({
         id: {
             type: Number
         },
-        name: {
+        username: {
             type: String
-        }
+        },
+        displayName: {
+            type: String
+        },
     }
 });
 

@@ -4,18 +4,21 @@ import {
     SIGN_IN, 
     SIGN_OUT, 
     DATA_INITIALIZED,
-    DONE_LOADING
+    DONE_LOADING,
+    OPEN_POST_MODAL,
+    CLOSE_POST_MODAL,
+    GET_POSTS,
+    ADD_NEW_POST
  } from './types'
 
 /**
  * Action Creator -> Actions -> Dispatch -> Middlewares -> Reducers
  */
-export const openAlert = ({msg, status}) => {
+export const openAlert = (payload) => {
     return dispatch => {
             dispatch({
                 type: OPEN_ALERT,
-                msg,
-                status
+                ...payload
             })
         }
 }
@@ -59,6 +62,32 @@ export const loadDone = () => {
     return dispatch => {
             dispatch({
                 type: DONE_LOADING
+            })
+        }
+}
+
+export const setPostModalDisplay = (open=false) => {
+    return dispatch => {
+            dispatch({
+                type: open ? OPEN_POST_MODAL : CLOSE_POST_MODAL
+            })
+        }
+}
+
+export const getPosts = posts => {
+    return dispatch => {
+            dispatch({
+                type: GET_POSTS,
+                posts
+            })
+        }
+}
+
+export const addNewPost = post => {
+    return dispatch => {
+            dispatch({
+                type: ADD_NEW_POST,
+                post
             })
         }
 }

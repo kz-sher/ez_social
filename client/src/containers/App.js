@@ -10,19 +10,15 @@ import '../styles/App.css';
 
 import reducers from '../reducers';
 import Main from './Main';
+import { extractTokenFromURL } from './utils';
 
 const history = createBrowserHistory();
-const token = localStorage.getItem('access-token');
-axios.defaults.headers.common['Authorization'] = "Bearer " + (!token ? '' : token);
+// const token = localStorage.getItem('access-token') || extractTokenFromURL();
+//axios.defaults.headers.common['Authorization'] = "Bearer " + token;
 
 function App() {
   return (
-    <Provider store={createStore(reducers, {
-      auth:{
-        isInitialized: false,
-        token: token
-      }  
-    }, applyMiddleware(reduxThunk))}>
+    <Provider store={createStore(reducers, {}, applyMiddleware(reduxThunk))}>
       <Router history={history}>
         <Main />
       </Router>

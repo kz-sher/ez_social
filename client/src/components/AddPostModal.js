@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import * as actions from '../actions';
+import { createPost, togglePostModal } from '../actions/post.action';
 
 import { withFormik} from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 
 import { Dialog, Typography, AppBar, Toolbar, IconButton, Button, Slide} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,18 +29,23 @@ const AddPostModal = ({
   errors,
   touched,
   isSubmitting,
-  open,
-  setPostModalDisplay,
-  handleSubmit
+  modalOpen,
+  togglePostModal,
+  handleSubmit,
+  handleReset
 }) => {
 
   const classes = useStyles();
+  const handleTogglePostModal = () => {
+    handleReset()
+    togglePostModal()
+  }
 
   return (
-    <Dialog fullScreen open={open} TransitionComponent={Transition}>
+    <Dialog fullScreen open={modalOpen} TransitionComponent={Transition}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={() => setPostModalDisplay()} aria-label="close">
+          <IconButton edge="start" color="inherit" onClick={handleTogglePostModal} aria-label="close">
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
@@ -74,53 +78,19 @@ const FormikForAddPostModal = withFormik({
     title: Yup.string().required(),
     description: Yup.string().required()
   }),
-  handleSubmit: async (values, {props, resetForm, setErrors, setSubmitting}) => {
-    const { openAlert, setPostModalDisplay, addNewPost } = props;
-    await axios.post('http://localhost:4000/api/post/create', values).then(
-      ({ data }) => {
-          if(data.POST_OK){
-            resetForm();
-            setPostModalDisplay();
-            setTimeout( () => {
-              openAlert({
-                  status: 'success',
-                  msg: data.message
-              })
-            }, 100);
-            getNewPostWithAct(addNewPost);
-          } 
-          else{
-              setErrors(data.formErrors);
-          }
-      },
-      ({ response })=>{
-          openAlert({
-            status: 'error',
-            msg: !response ? 'Server error occured' : response.data.message
-          })  
-      });
-    setSubmitting(false);
+  handleSubmit: async (values, {props, setErrors, setSubmitting}) => {
+    const { createPost } = props;
+    createPost({ postData: values, setErrors, setSubmitting })
   }
 });
 
-const getNewPostWithAct = async (setStorePost) => {
-  await axios.get('http://localhost:4000/api/post/create').then(
-      ({ data }) => {
-          setStorePost(data)
-      },
-      ({ response }) => {
-          console.log("response from 400 getposts");
-          console.log(response)
-      });
-}
-
 const mapStateToProps = state => {
   return {
-      open: state.post.open
+      modalOpen: state.post.modalOpen
   }
 }
 
 export default compose(
-  connect(mapStateToProps, actions),
+  connect(mapStateToProps, { createPost, togglePostModal }),
   FormikForAddPostModal
   )(AddPostModal);

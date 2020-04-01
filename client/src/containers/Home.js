@@ -1,19 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import queryString from "query-string";
-import * as actions from '../actions';
+import * as actions from '../actions/auth.action';
 import SignIn from './SignIn';
 import DashBoard from './DashBoard';
 
-const Home = ({ isLoggedIn, location, history, setToken}) => {
-    useEffect(() => {
-        var query = queryString.parse(location.search);
-        if (query.token) {
-          setToken(query.token);
-          history.push('/');
-       }
-    })
-
+const Home = ({ isLoggedIn }) => {
     return ( 
         isLoggedIn ? <DashBoard /> : <SignIn />
     );

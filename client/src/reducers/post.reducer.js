@@ -1,7 +1,13 @@
-import { OPEN_POST_MODAL, CLOSE_POST_MODAL, ADD_NEW_POST, GET_POSTS } from '../actions/types';
+import { 
+    OPEN_POST_MODAL, 
+    CLOSE_POST_MODAL, 
+    NEW_POST, 
+    GET_POSTS,
+    RESET_POSTS,
+} from '../actions/types';
 
 const DEFAULT_STATE = {
-    open: false,
+    modalOpen: false,
     post: {},
     posts: [],
     postLoading: false,
@@ -12,13 +18,15 @@ const DEFAULT_STATE = {
 export default (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case OPEN_POST_MODAL:
-            return {...state, open: true}
+            return {...state, modalOpen: true}
         case CLOSE_POST_MODAL:
-            return {...state, open: false}
+            return {...state, modalOpen: false}
         case GET_POSTS:
             return {...state, posts: [...action.posts]}
-        case ADD_NEW_POST:
+        case NEW_POST:
             return {...state, posts: [...state.posts, action.post]}
+        case RESET_POSTS:
+            return DEFAULT_STATE;
         default:
             return state;
     }

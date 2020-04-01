@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { closeAlert } from '../actions/alert.action';
 
 import {Snackbar} from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -10,10 +10,10 @@ const Alert = props => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
- const GlobalAlert = ({ open, msg, status, closeAlert}) => {
+ const GlobalAlert = ({ alertOpen, msg, status, closeAlert}) => {
     return (
         <Snackbar
-            open={open}
+            open={alertOpen}
             autoHideDuration={6000}
             onClose={closeAlert}>
             <Alert variant="filled" onClose={closeAlert} severity={status}>
@@ -25,11 +25,11 @@ const Alert = props => {
 
 const mapStateToProps = state => {
     return {
-        open: state.alert.open,
+        alertOpen: state.alert.alertOpen,
         msg: state.alert.msg,
         status: state.alert.status
     }
 }
 
-export default connect(mapStateToProps, actions)(GlobalAlert);
+export default connect(mapStateToProps, { closeAlert })(GlobalAlert);
 

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { getUserInitType } from '../actions/auth.action';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
@@ -21,36 +20,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Main({ isInitialized, initDone, loadDone, openAlert, setToken, removeToken }) {
+function Main({ isInitialized, getUserInitType }) {
     
-    const classes = useStyles();
-
-    // To check whether user is logged in based on sending token to server
     useEffect(() => {
-
-        async function verifyToken(){
-          await axios.post('http://localhost:4000/api/auth/vtoken').then(
-            () => {
-                setToken(localStorage.getItem('access-token'));
-            },
-            ({ response }) => {
-                removeToken();
-                // notify user if any message received 
-                if(response.data.message){
-                    openAlert({
-                        status: 'error',
-                        msg: response.data.message
-                    })
-                }
-            });
-            loadDone();
-            setTimeout(() => { initDone() }, 1000)
-            console.log('[Render Process]: Initialization Done')
-        }
-
-        setTimeout(() => { verifyToken(); }, 1200)
-
-      }, []);
+        // To check whether user is logged in or not
+        getUserInitType();
+    }, [])
+    const classes = useStyles();
 
     return (
         <div className="main">
@@ -76,4 +52,4 @@ function Main({ isInitialized, initDone, loadDone, openAlert, setToken, removeTo
 const mapStateToProps = state => ({
     isInitialized: state.init.isInitialized
 })
-export default connect(mapStateToProps, actions)(Main);
+export default connect(mapStateToProps, { getUserInitType })(Main);

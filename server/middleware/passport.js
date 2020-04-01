@@ -38,7 +38,7 @@ async function authenticateUserByJwt(payload, done){
     try{
         const { user } = await isUserExist({ "_id": payload.id });
         if (user) {
-            console.log(user)
+            console.log("****************\n[From middleware.passport.authenticateUserByJwt]:\n[currently logged in user:]\n"+user)
             return done(null, user);
          } else {
             return done("Invalid Token"); // verified token but user not found probably due to user account deletion

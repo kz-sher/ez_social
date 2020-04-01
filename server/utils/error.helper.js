@@ -9,9 +9,12 @@ const formatYupError = err => {
 }
 
 // Middleware error handler for json response
-const handlePassportError = (type) => (err, req, res, next) => {
+const handlePassportError = (type='standard') => (err, req, res, next) => {
   if(type == "jwt") {
+    // Extract token from requst header
     const token = fromAuthHeaderAsBearerToken()(req);
+
+    // response without error message if there is no error
     if(!token) {
       return res.sendStatus(400);
     }
@@ -19,6 +22,7 @@ const handlePassportError = (type) => (err, req, res, next) => {
       return res.status(400).json({ message: "Invalid/expired token" })
     }
   }
+  
   return res.status(400).json({ message: err });
 }
 

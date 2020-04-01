@@ -14,7 +14,7 @@ router.post('/signup', AuthController.signUpByLocal)
 router.post('/signin', passport.authenticate('local', { 
     session: false,
     failWithError: true
-}), AuthController.signInByLocal, handlePassportError('local'))
+}), AuthController.signInByLocal, handlePassportError())
 router.get('/oauth/google',
       passport.authenticate('google', { 
         scope: ['https://www.googleapis.com/auth/userinfo.profile'] 

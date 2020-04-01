@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import * as actions from '../actions';
+import { signIn } from '../actions/auth.action';
 
 import { withFormik} from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { Grid,  Typography, LinearProgress, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -76,20 +75,9 @@ const FormikForSignIn = withFormik({
         username: Yup.string().required(),
         password: Yup.string().required(),
     }),
-    handleSubmit: async (values, {props, setSubmitting}) => {
-        const { setToken, openAlert } = props;
-        await axios.post('http://localhost:4000/api/auth/signin', values).then(
-            ({ data }) => {
-                setToken(data.token);
-            },
-            ({ response })=>{
-                openAlert({
-                    status: 'error',
-                    msg: !response ? 'Server error occured' : response.data.message
-                }) 
-                setSubmitting(false)
-            }
-        );
+    handleSubmit: (values, {props, setSubmitting  }) => {
+        const { signIn } = props;
+        signIn({ userData: values, setSubmitting });
     }
 });
 
@@ -100,6 +88,6 @@ const mapStateToProps = state => {
 }
  
 export default compose(
-    connect(mapStateToProps, actions),
+    connect(mapStateToProps, { signIn }),
     FormikForSignIn
     )(SignIn);

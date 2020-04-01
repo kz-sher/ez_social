@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { togglePostModal } from '../actions/post.action';
+import { signOut } from '../actions/auth.action';
 
 import { AppBar, Toolbar, Typography, Box, IconButton } from '@material-ui/core';
 import { Language, AccountCircle, ExitToApp, AddComment } from '@material-ui/icons';
 
-const NavBar = ({ isLoggedIn, removeToken, setPostModalDisplay}) => {
-    let history = useHistory();
+const NavBar = ({ isLoggedIn, signOut, togglePostModal}) => {
+    const history = useHistory();
     const handleSignOut = () => {
-        removeToken();
-        history.push('/');
+        signOut(history)
+    }
+
+    const handleTogglePostModal = () => {
+        togglePostModal(true)
     }
 
     return ( 
@@ -33,7 +37,7 @@ const NavBar = ({ isLoggedIn, removeToken, setPostModalDisplay}) => {
                             <IconButton
                                 edge="end"
                                 color="inherit"
-                                onClick={setPostModalDisplay}>
+                                onClick={handleTogglePostModal}>
                                 <AddComment />
                             </IconButton>
                         </div>,
@@ -66,4 +70,6 @@ const mapStateToProps = state => {
     }
 }
  
-export default connect(mapStateToProps, actions)(NavBar);
+export default connect(mapStateToProps, { 
+    togglePostModal, signOut
+})(NavBar);

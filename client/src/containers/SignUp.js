@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import * as actions from '../actions';
+import { signUp } from '../actions/auth.action';
 
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 
 import { Grid, Typography, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -64,33 +63,14 @@ const FormikForSignUp = withFormik({
         confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required(),
         country: Yup.string().required()
     }),
-    handleSubmit: async (values, {props, resetForm, setErrors, setSubmitting}) => {
-        const openAlert = props.openAlert;
-        await axios.post('http://localhost:4000/api/auth/signup', values).then(
-                ({ data }) => { 
-                    if(data.ACC_OK){
-                        resetForm();
-                        openAlert({
-                            status: 'success',
-                            msg: data.message
-                        })
-                    } 
-                    else{
-                        setErrors(data.formErrors);
-                    }
-                },
-                ({ response }) => {
-                    openAlert({
-                        status: 'error',
-                        msg: !response ? 'Server error occured' : response.data.message
-                    })   
-                }
-            );
-        setSubmitting(false)
+    handleSubmit: (values, { props, setErrors, setSubmitting}) => {
+        const { signUp } = props;
+        const { history } = props;
+        signUp({ userData: values, history, setErrors, setSubmitting});
     }
 });
  
 export default compose(
-    connect(null, actions),
+    connect(null, { signUp }),
     FormikForSignUp,
     )(SignUp);

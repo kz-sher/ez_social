@@ -4,20 +4,12 @@ const router = express.Router();
 
 const PostController = require('../controllers/post.controller')
 const { handlePassportError } = require('../utils/error.helper');
-
-router.get("/", passport.authenticate("jwt", { 
+const JwtMiddleware = passport.authenticate("jwt", { 
     session: false,
     failWithError: true
-}), PostController.getAllPostsForSpecificUser, handlePassportError);
+})
 
-router.get("/create", passport.authenticate("jwt", { 
-    session: false,
-    failWithError: true
-}), PostController.getNewPostForUser, handlePassportError);
-
-router.post("/create", passport.authenticate("jwt", { 
-    session: false,
-    failWithError: true
-}), PostController.createPost, handlePassportError);
+router.get("/", JwtMiddleware, PostController.getAllPosts, handlePassportError());
+router.post("/create", JwtMiddleware, PostController.createPost, handlePassportError());
 
 module.exports = router;

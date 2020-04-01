@@ -1,4 +1,4 @@
-import { initDone, loadDone } from './init.action';
+import { initDone, loadDone } from '../actions/init.action';
 import axios from "axios";
 import queryString from 'query-string';
 
@@ -21,3 +21,8 @@ export const extractTokenFromURL = () => {
     var { query } = queryString.parseUrl(window.location.href);
     return query.token ? query.token : '';
 }
+
+export const getFormattedDate = (date) => {
+   const datetimeOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+   return new Date(Date.parse(date)).toLocaleDateString('en-US', datetimeOptions)
+ }

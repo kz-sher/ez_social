@@ -26,7 +26,7 @@ const doneLoadingOptions = {
   
 const Loading = ({ isLoading }) => {
     return ( 
-        <Fade in={true} timeout={1200}>
+        <Fade in={true} timeout={800}>
             <Grid className="init-loader-container" container justify="center" alignItems="center">
                 <Backdrop className="init-loader" open={true}>
                     <Grid className=" it-loader-container" item xs={10} sm={3}>

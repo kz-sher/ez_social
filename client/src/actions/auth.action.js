@@ -1,7 +1,7 @@
 import { SIGN_IN, SIGN_OUT } from './types';
 import { openAlert } from './alert.action';
 import { resetPosts } from './post.action';
-import { endInitLoading, setAuthHeader, extractTokenFromURL } from './utils';
+import { endInitLoading, setAuthHeader, extractTokenFromURL } from '../utils';
 import axios from 'axios';
 
 export const getUserInitType = () => {

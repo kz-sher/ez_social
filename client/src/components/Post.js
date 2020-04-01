@@ -1,23 +1,20 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Grid from '@material-ui/core/Grid';
-import Fade from '@material-ui/core/Fade';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import React, { forwardRef } from 'react';
 
+import clsx from 'clsx';
+import { getFormattedDate } from '../utils';
+
+import {
+  Grid, Fade, Card,
+  CardHeader, CardMedia, CardContent,
+  CardActions, Collapse, Avatar,
+  IconButton, Typography
+} from '@material-ui/core';
+import {
+  Favorite, Share,
+  ExpandMore, MoreVert
+} from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 import { Skeleton } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
@@ -58,20 +55,9 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
       backgroundColor: red[500],
     },
-    truncDesc: {
-      // marginTop: '0',
-    },
-    desc: {
-      // paddingTop: '0',
-    }
   }));
 
-const getFormattedDate = (date) => {
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(Date.parse(date)).toLocaleDateString('en-US', options);
-}
-
-const Post = ({ post, image }) => {
+const Post = forwardRef(({ post, image }, ref) => {
     
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -80,7 +66,7 @@ const Post = ({ post, image }) => {
         setExpanded(!expanded);
     };
     return ( 
-          <Grid className={classes.root} item xs={12} sm={6}>
+          <Grid ref={ref} className={classes.root} item xs={12} sm={6}>
             <Card className={classes.card} variant="outlined">
                 <CardHeader
                 avatar={
@@ -90,7 +76,7 @@ const Post = ({ post, image }) => {
                 }
                 action={
                     <IconButton aria-label="settings">
-                    <MoreVertIcon />
+                    <MoreVert />
                     </IconButton>
                 }
                 title={post.author}
@@ -103,10 +89,10 @@ const Post = ({ post, image }) => {
                 />
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
-                      <FavoriteIcon />
+                      <Favorite />
                   </IconButton>
                   <IconButton aria-label="share">
-                      <ShareIcon />
+                      <Share />
                   </IconButton>
                   { !expanded &&
                   <IconButton
@@ -117,7 +103,7 @@ const Post = ({ post, image }) => {
                       aria-expanded={expanded}
                       aria-label="show more"
                   >
-                      <ExpandMoreIcon />
+                      <ExpandMore />
                   </IconButton>
                   }
                 </CardActions>
@@ -140,6 +126,6 @@ const Post = ({ post, image }) => {
             </Card>
           </Grid>
      );
-}
+})
  
 export default Post;

@@ -1,9 +1,14 @@
 import { 
     OPEN_POST_MODAL, 
     CLOSE_POST_MODAL, 
-    GET_POSTS, 
-    NEW_POST,
+    SET_POSTS, 
+    ADD_POST,
     RESET_POSTS,
+    SET_POSTS_LOADING_ERROR,
+    SET_POSTS_LOADING,
+    SET_HAS_MORE_POSTS,
+    SET_PAGE_NUM,
+    INC_PAGE_NUM,
 } from './types';
 import { openAlert } from './alert.action';
 import axios from 'axios';
@@ -16,19 +21,33 @@ export const togglePostModal = (open=false) => {
         }
 }
 
-export const getPosts = () => {
+export const getPosts = (pageNum) => {
     return dispatch => {
-        axios.get('http://localhost:4000/api/post/').then(
+
+        dispatch(setPostsLoading(true));
+        dispatch(setPostsLoadingError(false));
+
+        const params = { 
+            params: { 
+                pageNum, 
+                nPerPage: 10 
+            }
+        }
+
+        let cancel;
+
+        axios.get('http://localhost:4000/api/post/', params).then(
             ({ data }) => {
-                dispatch({
-                    type: GET_POSTS,
-                    posts: data
-                })
+                dispatch(setPosts(data));
+                dispatch(setHasMorePosts(data.length > 0));
+                dispatch(setPostsLoading(false));
             },
             ({ response }) => {
-                console.log("response from 400 getposts");
-                console.log(response)
+                if(axios.isCancel(response)) return
+                dispatch(setPostsLoadingError(true));
+                dispatch(setPostsLoading(false));
             });
+        return () => cancel();
     }
 }
 
@@ -44,10 +63,7 @@ export const createPost = ({ postData, setErrors, setSubmitting }) => {
                             msg: data.message
                         }));
                     }, 100);
-                    dispatch({
-                        type: NEW_POST,
-                        post: data.post
-                    })
+                    addNewPost(data.post);
                 } 
                 else{
                     setErrors(data.formErrors);
@@ -67,4 +83,66 @@ export const resetPosts = () => {
     return {
        type: RESET_POSTS
     };
- };
+};
+
+export const setPostsLoadingError = isError => {
+    return dispatch => {
+        dispatch({
+            type: SET_POSTS_LOADING_ERROR,
+            payload: isError
+        });
+    };
+};
+
+export const setPostsLoading = isLoading => {
+    return dispatch => {
+        dispatch({
+            type: SET_POSTS_LOADING,
+            payload: isLoading
+        });
+    };
+};
+
+export const setPosts = posts => {
+    return dispatch => {
+        dispatch({
+            type: SET_POSTS,
+            payload: posts
+        });
+    }
+}
+
+export const addNewPost = post => {
+    return dispatch => {
+        dispatch({
+            type: ADD_POST,
+            payload: post
+        });
+    }
+}
+
+export const setHasMorePosts = hasMorePosts => {
+    return dispatch => {
+        dispatch({
+            type: SET_HAS_MORE_POSTS,
+            payload: hasMorePosts
+        });
+    }
+}
+
+export const setPageNum = pageNum => {
+    return dispatch => {
+        dispatch({
+            type: SET_PAGE_NUM,
+            payload: pageNum
+        });
+    }
+}
+
+export const incrementPageNum = () => {
+    return dispatch => {
+        dispatch({
+            type: INC_PAGE_NUM,
+        });
+    }
+}

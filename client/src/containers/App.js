@@ -4,17 +4,13 @@ import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
-import axios from 'axios';
 
 import '../styles/App.css';
 
 import reducers from '../reducers';
 import Main from './Main';
-import { extractTokenFromURL } from './utils';
 
 const history = createBrowserHistory();
-// const token = localStorage.getItem('access-token') || extractTokenFromURL();
-//axios.defaults.headers.common['Authorization'] = "Bearer " + token;
 
 function App() {
   return (

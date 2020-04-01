@@ -13,11 +13,18 @@ function getPostsForUser(req, res){
 }
 
 function getAllPosts(req, res){
-    Post.find().sort({ date: -1 }).limit(10)
+    const pageNum = req.query.pageNum;
+    const nPerPage = req.query.nPerPage;
+    console.log(pageNum, nPerPage)
+    setTimeout(() => {
+    Post.find()
+        .sort({ date: -1 })
+        .limit(10)
+        .skip( pageNum > 0 ? ( ( pageNum - 1 ) * nPerPage ) : 0 )
         .then(posts => res.status(200).json(posts))
         .catch(err =>
             res.status(400).json({ message: "['A11']: Error fetching posts" })
-        );
+        )}, 1000)
 }
 
 async function createPost(req, res){

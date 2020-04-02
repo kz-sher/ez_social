@@ -15,7 +15,6 @@ import {
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
-import { Skeleton } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     root: props => ({

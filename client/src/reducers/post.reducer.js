@@ -6,6 +6,7 @@ import {
     RESET_POSTS,
     SET_POSTS_LOADING_ERROR,
     SET_POSTS_LOADING,
+    SET_POST_LOADING,
     SET_HAS_MORE_POSTS,
     SET_PAGE_NUM,
     INC_PAGE_NUM,
@@ -15,7 +16,7 @@ const DEFAULT_STATE = {
     modalOpen: false,
     post: {},
     posts: [],
-    postLoading: true,
+    postLoading: false,
     postsLoading: true,
     isNewPost: false,
     pageNum:0,
@@ -32,11 +33,13 @@ export default (state = DEFAULT_STATE, action) => {
         case SET_POSTS:
             return {...state, posts: [...state.posts, ...action.payload]}
         case ADD_POST:
-            return {...state, posts: [...state.posts, action.payload]}
+            return {...state, posts: [action.payload, ...state.posts]}
         case RESET_POSTS:
             return DEFAULT_STATE;
         case SET_POSTS_LOADING_ERROR:
             return {...state, postsLoadingError: action.payload}
+        case SET_POST_LOADING:
+            return {...state, postLoading: action.payload}
         case SET_POSTS_LOADING:
             return {...state, postsLoading: action.payload}
         case SET_HAS_MORE_POSTS:

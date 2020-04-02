@@ -2,14 +2,17 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getPosts, incrementPageNum } from '../actions/post.action';
 
-import { Skeleton } from '@material-ui/lab';
 import { Grid, CircularProgress, Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddPostModal from '../components/AddPostModal';
 import ListPosts from '../components/ListPosts';
 import PostSkeleton from '../components/PostSkeleton';
+import PostSkeletonWithCover from '../components/PostSkeletonWithCover';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100%',
+    },
     postLoading: {
         marginTop: '1.5em',
         marginBottom: '1.5em',
@@ -25,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashBoard = ({ 
     posts, 
+    postLoading,
     postsLoading, 
     postsLoadingError, 
     hasMorePosts, 
@@ -55,18 +59,23 @@ const DashBoard = ({
     }, [postsLoading, hasMorePosts]);
 
     return ( 
-        <Grid container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={12}>
+        <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={12} wrap="nowrap">
+            { postLoading &&
+                <PostSkeletonWithCover />
+            }
             { postsLoading &&
             <>
-                <PostSkeleton />
-                <PostSkeleton />
+                <PostSkeleton key='postSke1' />
+                <PostSkeleton key='postSke2' />
             </>
             }
 
             <ListPosts posts={ posts } ref={lastPostElementRef} /> 
-            <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-                <CircularProgress className={classes.postLoading} /> 
-            </Slide>
+            {hasMorePosts &&
+                <Slide direction="up" in={true} mountOnEnter unmountOnExit>
+                    <CircularProgress className={classes.postLoading} /> 
+                </Slide>
+            }
             { postsLoadingError && <div> Error Occured </div> }
             <AddPostModal />
         </Grid>
@@ -76,6 +85,7 @@ const DashBoard = ({
 const mapStateToProps = state => {
     return {
         posts: state.post.posts,
+        postLoading: state.post.postLoading,
         postsLoading: state.post.postsLoading,
         postsLoadingError: state.post.postsLoadingError,
         hasMorePosts: state.post.hasMorePosts,

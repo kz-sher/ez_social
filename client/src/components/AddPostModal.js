@@ -78,9 +78,9 @@ const FormikForAddPostModal = withFormik({
     title: Yup.string().required(),
     description: Yup.string().required()
   }),
-  handleSubmit: async (values, {props, setErrors, setSubmitting}) => {
+  handleSubmit: async (values, {props, resetForm, setErrors, setSubmitting}) => {
     const { createPost } = props;
-    createPost({ postData: values, setErrors, setSubmitting })
+    createPost({ postData: values, resetForm, setErrors, setSubmitting });
   }
 });
 

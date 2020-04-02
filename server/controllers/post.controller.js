@@ -18,9 +18,9 @@ function getAllPosts(req, res){
     console.log(pageNum, nPerPage)
     setTimeout(() => {
     Post.find()
-        .sort({ date: -1 })
         .limit(10)
-        .skip( pageNum > 0 ? ( ( pageNum - 1 ) * nPerPage ) : 0 )
+        .sort({ 'date': -1 })
+        .skip( pageNum > 0 ? ( pageNum * nPerPage ) : 0 )
         .then(posts => res.status(200).json(posts))
         .catch(err =>
             res.status(400).json({ message: "['A11']: Error fetching posts" })

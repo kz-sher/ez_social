@@ -16,8 +16,13 @@ import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
     },
+    main: {
+        flexGrow: 1,
+    }
 }));
 
 function Main({ isInitialized, getUserInitType }) {
@@ -29,17 +34,17 @@ function Main({ isInitialized, getUserInitType }) {
     const classes = useStyles();
 
     return (
-        <div className="main">
+        <div className={classes.root}>
             {!isInitialized ?
                 <Loading />
             : <>
                 <NavBar />
-                <Grid className={classes.root} container justify="center" alignItems="flex-start">
+                <Grid className={classes.main} container justify="center" alignItems="center">
                     <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/test" component={NotFound} />
-                    <Route path="/signup" component={AuthGuard("reverse")(SignUp)} />
-                    <Route component={NotFound} />
+                        <Route exact path="/" component={Home} />
+                        <Route exact path="/test" component={NotFound} />
+                        <Route path="/signup" component={AuthGuard("reverse")(SignUp)} />
+                        <Route component={NotFound} />
                     </Switch>
                 </Grid>
                 <GlobalAlert />

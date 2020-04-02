@@ -6,6 +6,7 @@ import {
     RESET_POSTS,
     SET_POSTS_LOADING_ERROR,
     SET_POSTS_LOADING,
+    SET_POST_LOADING,
     SET_HAS_MORE_POSTS,
     SET_PAGE_NUM,
     INC_PAGE_NUM,
@@ -24,7 +25,6 @@ export const togglePostModal = (open=false) => {
 export const getPosts = (pageNum) => {
     return dispatch => {
 
-        dispatch(setPostsLoading(true));
         dispatch(setPostsLoadingError(false));
 
         const params = { 
@@ -38,8 +38,14 @@ export const getPosts = (pageNum) => {
 
         axios.get('http://localhost:4000/api/post/', params).then(
             ({ data }) => {
-                dispatch(setPosts(data));
-                dispatch(setHasMorePosts(data.length > 0));
+                console.log(data)
+                if(data.length > 0){
+                    dispatch(setPosts(data));
+                    dispatch(setHasMorePosts(true));
+                }
+                else{
+                    dispatch(setHasMorePosts(false));
+                }
                 dispatch(setPostsLoading(false));
             },
             ({ response }) => {
@@ -51,19 +57,18 @@ export const getPosts = (pageNum) => {
     }
 }
 
-export const createPost = ({ postData, setErrors, setSubmitting }) => {
+export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) => {
     return dispatch => {
         axios.post('http://localhost:4000/api/post/create', postData).then(
             ({ data }) => {
                 if(data.POST_OK){
                     dispatch(togglePostModal());
+                    resetForm();
+                    dispatch(setPostLoading(true));
                     setTimeout( () => {
-                        dispatch(openAlert({
-                            status: 'success',
-                            msg: data.message
-                        }));
-                    }, 100);
-                    addNewPost(data.post);
+                        dispatch(addNewPost(data.post));
+                        dispatch(setPostLoading(false));
+                    }, 1000);
                 } 
                 else{
                     setErrors(data.formErrors);
@@ -80,9 +85,11 @@ export const createPost = ({ postData, setErrors, setSubmitting }) => {
 }
 
 export const resetPosts = () => {
-    return {
-       type: RESET_POSTS
-    };
+    return dispatch => {
+        dispatch({
+            type: RESET_POSTS
+        });
+    }
 };
 
 export const setPostsLoadingError = isError => {
@@ -98,6 +105,15 @@ export const setPostsLoading = isLoading => {
     return dispatch => {
         dispatch({
             type: SET_POSTS_LOADING,
+            payload: isLoading
+        });
+    };
+};
+
+export const setPostLoading = isLoading => {
+    return dispatch => {
+        dispatch({
+            type: SET_POST_LOADING,
             payload: isLoading
         });
     };

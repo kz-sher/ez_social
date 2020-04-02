@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
     card: {
         maxWidth: '100%',
         border: "none",
+        overflow: 'hidden',
+        position: 'relative',
     },
     media: {
         height: 0,
@@ -44,11 +46,12 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-function PostSkeleton() {
+function PostSkeleton(props) {
     const classes = useStyles();
     return (
         <Grid className={classes.root} item xs={12} sm={6}>
             <Card className={classes.card} variant="outlined">
+                {props.children? props.children:''}
                 <CardHeader
                 avatar={
                     <Skeleton animation="wave" variant="circle" width={40} height={40} />

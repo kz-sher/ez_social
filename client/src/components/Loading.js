@@ -1,10 +1,22 @@
 import React from 'react';
 import Lottie from "react-lottie";
 import { connect } from 'react-redux';
+
 import { Grid, Box, Backdrop, Typography, Fade } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import * as legoData from "../animations/lego-loading.json";
 import * as doneData from "../animations/done-loading.json";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+      zIndex: '100',
+      backgroundColor: 'white !important',
+  },
+  loader: {
+      backgroundColor: 'white !important',
+  }
+}));
 
 const legoLoadingOptions = {
   loop: true,
@@ -25,11 +37,12 @@ const doneLoadingOptions = {
 };
   
 const Loading = ({ isLoading }) => {
+    const classes = useStyles();
     return ( 
         <Fade in={true} timeout={800}>
-            <Grid className="init-loader-container" container justify="center" alignItems="center">
-                <Backdrop className="init-loader" open={true}>
-                    <Grid className=" it-loader-container" item xs={10} sm={3}>
+            <Grid className={classes.container} container justify="center" alignItems="center">
+                <Backdrop className={classes.loader} open={true}>
+                    <Grid item xs={10} sm={3}>
                         <Box mb={2} fontStyle="italic" fontWeight={500} textAlign="center">
                         { isLoading ? (
                             <>

@@ -1,12 +1,12 @@
 /* App */
-.main {
+/* .main {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
+} */
 
 /* NavBar */
-.navbar-title {
+/* .navbar-title {
   text-decoration: none;
   color: white;
   flex-grow: 1;
@@ -15,26 +15,26 @@
 
 .navbar-icon {
   margin-right: 1em;
-}
+} */
 
 /* Loading */
-.init-loader-container {
+/* .init-loader-container {
   z-index: 100;
   background-color: white !important;
 }
 
 .init-loader {
   background-color: white !important;
-}
+} */
 
 
 /* SignIn/Up */
-.create-account-now-link{
+/* .create-account-now-link{
   text-decoration: none;
 }
 
 .social-media-link{
   text-decoration: none;
   color: white;
-}
+} */
 

@@ -32,7 +32,8 @@ const AddPostModal = ({
   modalOpen,
   togglePostModal,
   handleSubmit,
-  handleReset
+  handleReset,
+  setFieldValue
 }) => {
 
   const classes = useStyles();
@@ -60,13 +61,18 @@ const AddPostModal = ({
           </Button>
         </Toolbar>
       </AppBar>
-      <PostForm errors={errors} touched={touched} isSubmitting={isSubmitting} />
+      <PostForm
+        errors={errors}
+        touched={touched}
+        isSubmitting={isSubmitting}
+        setFieldValue={setFieldValue}
+        />
     </Dialog>
   );
 }
 
 const initialValues = {
-  title: '',
+  image: null,
   description: ''
 }
 
@@ -75,12 +81,20 @@ const FormikForAddPostModal = withFormik({
     return initialValues
   },
   validationSchema: Yup.object().shape({
-    title: Yup.string().required(),
+    image: Yup.mixed().required('image is required'),
     description: Yup.string().required()
   }),
   handleSubmit: async (values, {props, resetForm, setErrors, setSubmitting}) => {
     const { createPost } = props;
-    createPost({ postData: values, resetForm, setErrors, setSubmitting });
+    const postData = new FormData();
+    postData.append('image', values.image);
+    postData.append('description', values.description);
+    createPost({ 
+        postData,
+        resetForm, 
+        setErrors, 
+        setSubmitting 
+    });
   }
 });
 

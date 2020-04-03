@@ -4,6 +4,7 @@ import { getPosts, incrementPageNum } from '../actions/post.action';
 
 import { Grid, CircularProgress, Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import AddPostModal from '../components/AddPostModal';
 import ListPosts from '../components/ListPosts';
 import PostSkeleton from '../components/PostSkeleton';
@@ -22,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
             width: '20px !important',
             height: '20px !important',
         },
-        
     },
+    alert: {
+        margin: theme.spacing(2, 0)
+    }
 }));
 
 const DashBoard = ({ 
@@ -35,13 +38,14 @@ const DashBoard = ({
     pageNum, 
     getPosts,
     incrementPageNum,
+    lastPostId
 }) => {
 
     const classes = useStyles();
 
     // Get all posts by page number
     useEffect(() => {
-        getPosts(pageNum);
+        getPosts(pageNum, lastPostId);
     }, [pageNum])
 
     // Set observer for viewing last post so that more posts will be loaded when it appears on screen
@@ -76,7 +80,15 @@ const DashBoard = ({
                     <CircularProgress className={classes.postLoading} /> 
                 </Slide>
             }
-            { postsLoadingError && <div> Error Occured </div> }
+            { !postsLoading && !hasMorePosts && !postsLoadingError &&
+                <Alert className={classes.alert} variant="filled" severity="info">
+                    No More Posts
+                </Alert>
+            }
+            { postsLoadingError && 
+                <Alert className={classes.alert} variant="filled" severity="error">
+                    Server Error Occured
+                </Alert> }
             <AddPostModal />
         </Grid>
      );
@@ -90,6 +102,7 @@ const mapStateToProps = state => {
         postsLoadingError: state.post.postsLoadingError,
         hasMorePosts: state.post.hasMorePosts,
         pageNum: state.post.pageNum,
+        lastPostId: state.post.lastPostId
     }
 }
 

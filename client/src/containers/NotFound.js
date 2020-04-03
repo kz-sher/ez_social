@@ -32,7 +32,7 @@ const NotFound = () => {
         <Grid container item direction="row-reverse" justify="space-between" alignItems="center" xs={11} sm={6} spacing={3}>
             
             <Grid container item justify="center" sm={6}>
-                <img src={Emoji} width='90%' height='90%'/>
+                <img src={Emoji} width='90%' height='90%'alt="emoji.png" />
             </Grid>
 
             <Grid container item justify="center" sm={6}>

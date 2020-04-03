@@ -18,7 +18,7 @@ export const getUserInitType = () => {
                 },
                 ({ response }) => {
                     // notify user if any message received 
-                    if(response.data.message){
+                    if(response && response.data.message){
                         dispatch(openAlert({
                             status: 'error',
                             msg: response.data.message

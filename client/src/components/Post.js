@@ -17,7 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
-    root: props => ({
+    root: {
       width: "100%",
       marginTop: '3em',
       [theme.breakpoints.down('md')]: {
@@ -29,17 +29,17 @@ const useStyles = makeStyles((theme) => ({
           marginBottom: '0.5em',
         }
       },
-    }),
+    },
     card: {
       maxWidth: '100%',
       border: theme.border,
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('sm')]: {
         border: 'none',
       },
     },
     media: {
       height: 0,
-      paddingTop: '75%', // '56.25%', // 16:9
+      paddingTop: '75%', // 4:3
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const Post = forwardRef(({ post, image }, ref) => {
+const Post = forwardRef(({ post }, ref) => {
     
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -65,7 +65,7 @@ const Post = forwardRef(({ post, image }, ref) => {
         setExpanded(!expanded);
     };
     return ( 
-          <Grid ref={ref} className={classes.root} item xs={12} sm={6}>
+          <Grid ref={ref} className={classes.root} item xs={12} sm={10} md={6}>
             <Card className={classes.card} variant="outlined">
                 <CardHeader
                 avatar={
@@ -73,25 +73,17 @@ const Post = forwardRef(({ post, image }, ref) => {
                     {post.author[0].toUpperCase()}
                     </Avatar>
                 }
-                // action={
-                //     <IconButton aria-label="settings">
-                //     <MoreVert />
-                //     </IconButton>
-                // }
                 title={post.author}
                 subheader={getFormattedDate(post.date)}
                 />
                 <CardMedia
                 className={classes.media}
-                image={image}
+                image={'http://localhost:4000/static/' + post.image.filename}
                 />
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
                       <Favorite />
                   </IconButton>
-                  {/* <IconButton aria-label="share">
-                      <Share />
-                  </IconButton> */}
                   { !expanded &&
                   <IconButton
                       className={clsx(classes.expand, {
@@ -109,7 +101,7 @@ const Post = forwardRef(({ post, image }, ref) => {
                 <CardContent>  
                   <Fade in={true}>
                     <Typography noWrap>
-                        {post.title}
+                        {post.description}
                     </Typography>
                   </Fade>
                 </CardContent>

@@ -21,7 +21,8 @@ const DEFAULT_STATE = {
     isNewPost: false,
     pageNum:1,
     postsLoadingError: false,
-    hasMorePosts: false
+    hasMorePosts: false,
+    lastPostId: -1,
 };
 
 export default (state = DEFAULT_STATE, action) => {
@@ -31,7 +32,7 @@ export default (state = DEFAULT_STATE, action) => {
         case CLOSE_POST_MODAL:
             return {...state, modalOpen: false}
         case SET_POSTS:
-            return {...state, posts: [...state.posts, ...action.payload]}
+            return {...state, posts: [...state.posts, ...action.payload.posts], lastPostId: action.payload.postId}
         case ADD_POST:
             return {...state, posts: [action.payload, ...state.posts]}
         case RESET_POSTS:

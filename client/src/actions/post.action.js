@@ -22,7 +22,7 @@ export const togglePostModal = (open=false) => {
         }
 }
 
-export const getPosts = (pageNum) => {
+export const getPosts = (pageNum, postId) => {
     return dispatch => {
 
         dispatch(setPostsLoadingError(false));
@@ -30,7 +30,8 @@ export const getPosts = (pageNum) => {
         const params = { 
             params: { 
                 pageNum, 
-                nPerPage: 10 
+                nPerPage: 10,
+                postId,
             }
         }
 
@@ -38,7 +39,7 @@ export const getPosts = (pageNum) => {
 
         axios.get('http://localhost:4000/api/post/', params).then(
             ({ data }) => {
-                if(data.length > 0){
+                if(data.posts.length > 0){
                     dispatch(setPosts(data));
                     dispatch(setHasMorePosts(true));
                 }
@@ -57,6 +58,7 @@ export const getPosts = (pageNum) => {
 }
 
 export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) => {
+    console.log(postData)
     return dispatch => {
         axios.post('http://localhost:4000/api/post/create', postData).then(
             ({ data }) => {
@@ -67,7 +69,7 @@ export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) =>
                     setTimeout( () => {
                         dispatch(addNewPost(data.post));
                         dispatch(setPostLoading(false));
-                    }, 1000);
+                    }, 500);
                 } 
                 else{
                     setErrors(data.formErrors);
@@ -77,7 +79,7 @@ export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) =>
                 dispatch(openAlert({
                     status: 'error',
                     msg: !response ? 'Server error occured' : response.data.message
-                }))  
+                }))
                 setSubmitting(false);
             });
     }

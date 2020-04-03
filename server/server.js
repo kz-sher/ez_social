@@ -22,6 +22,7 @@ connection.once('open', function() {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use('/static', express.static('uploads'))
 app.use('/api/auth', AuthRouter);
 app.use('/api/post', PostRouter);
 app.listen(PORT, function() {

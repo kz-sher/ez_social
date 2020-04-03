@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 function PostSkeleton(props) {
     const classes = useStyles();
     return (
-        <Grid className={classes.root} item xs={12} sm={6}>
+        <Grid className={classes.root} item xs={12} sm={10} md={6}>
             <Card className={classes.card} variant="outlined">
                 {props.children? props.children:''}
                 <CardHeader

@@ -10,8 +10,8 @@ import {
   IconButton, Typography
 } from '@material-ui/core';
 import {
-  Favorite, Share,
-  ExpandMore, MoreVert
+  Favorite, //Share,
+  ExpandMore,// MoreVert
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
@@ -73,26 +73,25 @@ const Post = forwardRef(({ post, image }, ref) => {
                     {post.author[0].toUpperCase()}
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                    <MoreVert />
-                    </IconButton>
-                }
+                // action={
+                //     <IconButton aria-label="settings">
+                //     <MoreVert />
+                //     </IconButton>
+                // }
                 title={post.author}
                 subheader={getFormattedDate(post.date)}
                 />
                 <CardMedia
                 className={classes.media}
                 image={image}
-                // title="Paella dish"
                 />
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
                       <Favorite />
                   </IconButton>
-                  <IconButton aria-label="share">
+                  {/* <IconButton aria-label="share">
                       <Share />
-                  </IconButton>
+                  </IconButton> */}
                   { !expanded &&
                   <IconButton
                       className={clsx(classes.expand, {

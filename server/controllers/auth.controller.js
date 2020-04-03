@@ -11,6 +11,7 @@ const signUpByLocal = async function (req, res) {
 
     let errors = {}
     let userData = req.body
+    console.log(req.body)
 
     try {
         await registerValidator.validate(userData, { abortEarly: false });

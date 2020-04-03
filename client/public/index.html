@@ -27,6 +27,15 @@
     <title>Ez Social</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+        <!-- Material ScrollTop stylesheet -->
+    <link rel="stylesheet" href="dist/material-scrolltop.css" />
+
+    <!-- material-scrolltop plugin -->
+    <script src="dist/material-scrolltop.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -41,5 +50,10 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <button class="material-scrolltop" type="button"></button>
+    <script>
+      $('body').materialScrollTop();
+    </script>
   </body>
+  <!-- Initialize material-scrolltop (minimal) -->
 </html>

@@ -38,7 +38,6 @@ export const getPosts = (pageNum) => {
 
         axios.get('http://localhost:4000/api/post/', params).then(
             ({ data }) => {
-                console.log(data)
                 if(data.length > 0){
                     dispatch(setPosts(data));
                     dispatch(setHasMorePosts(true));

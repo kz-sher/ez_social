@@ -19,7 +19,7 @@ const DEFAULT_STATE = {
     postLoading: false,
     postsLoading: true,
     isNewPost: false,
-    pageNum:0,
+    pageNum:1,
     postsLoadingError: false,
     hasMorePosts: false
 };

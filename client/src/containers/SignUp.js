@@ -34,12 +34,13 @@ const SignUp = ({
     errors,
     touched,
     isSubmitting,
+    setFieldValue
 }) => {
     const classes = useStyles();
 
     return ( 
         <Grid className={classes.root} container item direction="column" justify="center" alignItems="center" xs={11} sm={6}>
-            <SignUpForm errors={errors} touched={touched} isSubmitting={isSubmitting} />
+            <SignUpForm errors={errors} touched={touched} isSubmitting={isSubmitting} setFieldValue={setFieldValue} />
             <Grid item xs={12}>
                 <Typography className={classes.text} variant="body2" color="textSecondary">or sign in with</Typography>
             </Grid>

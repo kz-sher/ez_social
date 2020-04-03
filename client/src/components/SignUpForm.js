@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import countries from '../data/countries';
 import { Form, Field } from 'formik';
-import { map, sortBy} from 'lodash';
+import countries from '../data/countries.json';
 
-import { Grid, Button, Typography, Divider, TextField, MenuItem, IconButton, InputAdornment, LinearProgress} from '@material-ui/core';
+import { Grid, Button, Typography, Divider, TextField, IconButton, InputAdornment, LinearProgress} from '@material-ui/core';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,14 +39,26 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: 'underline',
         },
     },
+    option: {
+        fontSize: 15,
+        '& > span': {
+            marginRight: 10,
+            fontSize: 18,
+        },
+    },
 }));
 
-function SignUpForm({ errors, touched, isSubmitting }) {
-    
+function SignUpForm({ errors, touched, isSubmitting, setFieldValue}) {
+
     const classes = useStyles();
-    const [showPassword, setShowPassword] = React.useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [country, setCountry] = useState(null)
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
+    }
+    const handleCountryChange = (e, newCountry) => {
+        setCountry(newCountry);
+        setFieldValue('country', newCountry?newCountry.name:'');
     }
 
     return (
@@ -66,7 +78,7 @@ function SignUpForm({ errors, touched, isSubmitting }) {
             
             <Form className={classes.form}>
                 <Grid container item justify="center" alignItems="center" spacing={2}>
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={11} sm={7}>
                         <Field
                         type="input"
                         name="username"
@@ -78,7 +90,7 @@ function SignUpForm({ errors, touched, isSubmitting }) {
                         fullWidth/>
                     </Grid>
 
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={11} sm={7}>
                         <Field
                         type={showPassword ? "text" : "password" }
                         name="password"
@@ -102,7 +114,7 @@ function SignUpForm({ errors, touched, isSubmitting }) {
                         fullWidth/>
                     </Grid>
             
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={11} sm={7}>
                         <Field
                         type={showPassword ? "text" : "password" }
                         name="confirmPassword"
@@ -126,24 +138,31 @@ function SignUpForm({ errors, touched, isSubmitting }) {
                         fullWidth/>
                     </Grid>
                 
-                    <Grid item xs={12} sm={7}>
-                        <Field
-                        select
-                        name="country"
-                        label="Country"
-                        variant="outlined"
-                        as={TextField}    
-                        error={!!touched.country && !!errors.country}
-                        helperText={!!touched.country && !!errors.country && errors.country}                 
-                        fullWidth>
-                            <MenuItem value='' disabled selected>
-                                Choose your country
-                            </MenuItem>
-                            {map(sortBy(countries), (val, key) =>
-                                <MenuItem key={key} value={val}>
-                                    {val}
-                                </MenuItem>)}
-                        </Field>
+                    <Grid item xs={11} sm={7}>
+                        <Autocomplete
+                            id="country-select-demo"
+                            style={{ width: '100%' }}
+                            options={countries}
+                            getOptionLabel={(option) => option.name}
+                            classes={{ option: classes.option }}
+                            value={country}
+                            onChange={handleCountryChange}
+                            autoHighlight
+                            autoSelect
+                            openOnFocus
+                            renderInput={(params) => (
+                                <Field  
+                                {...params}
+                                name='country'
+                                label='Country'
+                                variant="outlined" 
+                                onChange={()=>{}}
+                                onBlur={()=>{}}
+                                error={!!touched.country && !!errors.country}
+                                helperText={!!touched.country && !!errors.country && errors.country}
+                                as={TextField}
+                                />)}
+                            />
                     </Grid>
 
                     <Grid container item justify="space-between" alignItems="center" xs={11} sm={7}>

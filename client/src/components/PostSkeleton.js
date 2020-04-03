@@ -58,18 +58,18 @@ function PostSkeleton(props) {
                 }
                 title={<Skeleton animation="wave" height={20} width="40%" />}
                 subheader={<Skeleton animation="wave" height={20} width="60%" />}
-                action={
-                    <div className={classes.moreVert}>
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                    </div>
-                }
+                // action={
+                //     <div className={classes.moreVert}>
+                //         <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
+                //         <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
+                //         <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
+                //     </div>
+                // }
                 />
                 <Skeleton animation="wave" className={classes.media} variant="rect" width="100%" height="100%" />
                 <CardActions disableSpacing>
                     <Skeleton animation="wave" className={classes.actionButton} variant="circle" width={40} height={40} />
-                    <Skeleton animation="wave" className={classes.actionButton} variant="circle" width={40} height={40} />
+                    {/* <Skeleton animation="wave" className={classes.actionButton} variant="circle" width={40} height={40} /> */}
                     <Skeleton animation="wave" className={classes.expand} variant="circle" width={40} height={40} />
                 </CardActions>
                 <CardContent>  

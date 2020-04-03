@@ -1,7 +1,6 @@
 const Post = require('../models/post.model')
 const { postValidator } = require('../services/post.service');
 const { formatYupError } = require('../utils/error.helper');
-const { orderBy } = require('lodash')
 
 function getPostsForUser(req, res){
     const name = req.user[req.user.method].displayName
@@ -19,8 +18,8 @@ function getAllPosts(req, res){
     setTimeout(() => {
     Post.find()
         .limit(10)
-        .sort({ 'date': -1 })
-        .skip( pageNum > 0 ? ( pageNum * nPerPage ) : 0 )
+        .sort({ '$natural': -1 })
+        .skip(  ( pageNum - 1 ) * nPerPage )
         .then(posts => res.status(200).json(posts))
         .catch(err =>
             res.status(400).json({ message: "['A11']: Error fetching posts" })

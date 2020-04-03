@@ -44,6 +44,7 @@ export const signUp = ({ userData, history, setErrors, setSubmitting }) => {
                 } 
                 else{
                     setErrors(data.formErrors);
+                    setSubmitting(false);
                 }
             },
             ({ response }) => {

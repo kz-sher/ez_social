@@ -1,9 +1,10 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getPosts, incrementPageNum } from '../actions/post.action';
+import { getPosts, incrementPageNum, togglePostModal } from '../actions/post.action';
 
-import { Grid, CircularProgress, Slide } from '@material-ui/core';
+import { Grid, CircularProgress, Slide, Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Add } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
 import AddPostModal from '../components/AddPostModal';
 import ListPosts from '../components/ListPosts';
@@ -26,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
     },
     alert: {
         margin: theme.spacing(2, 0)
+    },
+    fab: {
+        position: 'fixed',
+        bottom: '32px',
+        right: '32px',
+        [theme.breakpoints.down('sm')]:{
+            bottom: '16px',
+            right: '16px',
+        }
     }
 }));
 
@@ -36,12 +46,17 @@ const DashBoard = ({
     postsLoadingError, 
     hasMorePosts, 
     pageNum, 
+    lastPostId,
     getPosts,
     incrementPageNum,
-    lastPostId
+    togglePostModal
 }) => {
 
     const classes = useStyles();
+
+    const handleTogglePostModal = () => {
+        togglePostModal(true)
+    }
 
     // Get all posts by page number
     useEffect(() => {
@@ -63,7 +78,7 @@ const DashBoard = ({
     }, [postsLoading, hasMorePosts]);
 
     return ( 
-        <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={12} wrap="nowrap">
+        <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={6} wrap="nowrap">
             { postLoading &&
                 <PostSkeletonWithCover />
             }
@@ -89,6 +104,9 @@ const DashBoard = ({
                 <Alert className={classes.alert} variant="filled" severity="error">
                     Server Error Occured
                 </Alert> }
+            <Fab className={classes.fab} color="primary" onClick={handleTogglePostModal}>
+                <Add />
+            </Fab>
             <AddPostModal />
         </Grid>
      );
@@ -109,4 +127,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, { 
     getPosts,
     incrementPageNum,
+    togglePostModal,
 })(DashBoard);

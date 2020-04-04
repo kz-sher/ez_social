@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT } from './types';
+import { SIGN_IN, SIGN_OUT, SET_USERNAME } from './types';
 import { openAlert } from './alert.action';
 import { resetPosts } from './post.action';
 import { endInitLoading, setAuthHeader, extractTokenFromURL } from '../utils';
@@ -12,8 +12,9 @@ export const getUserInitType = () => {
     return dispatch => {
         setTimeout(() => {
             axios.post('http://localhost:4000/api/auth/vtoken').then(
-                () => {
+                ({ data }) => {
                     dispatch(setToken(token));
+                    dispatch(setUsername(data.username))
                     endInitLoading(dispatch);
                 },
                 ({ response }) => {
@@ -63,6 +64,7 @@ export const signIn = ({ userData, setSubmitting }) => {
         axios.post('http://localhost:4000/api/auth/signin', userData).then(
             ({ data }) => {
                 dispatch(setToken(data.token));
+                dispatch(setUsername(data.username));
             },
             ({ response })=>{
                 dispatch(openAlert({
@@ -101,5 +103,14 @@ export const removeToken = () => {
                 type: SIGN_OUT
             })
             localStorage.removeItem('access-token');
+        }
+}
+
+export const setUsername = username => {
+    return dispatch => {
+            dispatch({
+                type: SET_USERNAME,
+                username
+            })
         }
 }

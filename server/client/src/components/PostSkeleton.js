@@ -9,19 +9,19 @@ import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    root: props => ({
+    root: {
       width: "100%",
       marginTop: '3em',
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('')]: {
         marginTop: '0.5em',
       },
       '&:last-child':{
         marginBottom: '3em',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
           marginBottom: '0.5em',
         }
       },
-    }),
+    },
     moreVert:{
         marginTop: '8px'
     },
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 function PostSkeleton(props) {
     const classes = useStyles();
     return (
-        <Grid className={classes.root} item xs={12} sm={10} md={6}>
+        <Grid className={classes.root} item xs={12}>
             <Card className={classes.card} variant="outlined">
                 {props.children? props.children:''}
                 <CardHeader

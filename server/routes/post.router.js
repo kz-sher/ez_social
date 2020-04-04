@@ -11,5 +11,6 @@ const JwtMiddleware = passport.authenticate("jwt", {
 })
 
 router.get("/", JwtMiddleware, PostController.getAllPosts, handlePassportError());
+router.get("/profile", JwtMiddleware, PostController.getPostsForUser, handlePassportError());
 router.post("/create", [JwtMiddleware, MulterMiddleware], PostController.createPost, handlePassportError());
 module.exports = router;

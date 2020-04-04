@@ -7,6 +7,10 @@ const { formatYupError } = require('../utils/error.helper');
 const { registerValidator, generateAccessToken, addNewUser } = require('../services/auth.service');
 const { isEmpty } = require('lodash');
 
+const getUserData = (req, res) => {
+    return res.status(200).json({ username: req.user[req.user.method].displayName });
+}
+
 const signUpByLocal = async function (req, res) {
 
     let errors = {}
@@ -48,12 +52,12 @@ const signUpByLocal = async function (req, res) {
 
 const signInByLocal = (req, res) => {
     const token = generateAccessToken({ id: req.user._id });
-    res.status(200).json({ token });
+    res.status(200).json({ token, username: req.user[req.user.method].displayName });
 }
 
 const oauthGoogle = (req, res) => {
     const token = generateAccessToken({ id: req.user.id})
-    res.redirect('/?token=' + token);
+    res.redirect('/?token=' + token + '&?username=' + req.user.displayName);
 }
 
-module.exports = { signUpByLocal, signInByLocal, oauthGoogle }
+module.exports = { getUserData, signUpByLocal, signInByLocal, oauthGoogle }

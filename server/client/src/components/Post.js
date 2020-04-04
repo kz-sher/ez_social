@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { useState, forwardRef } from 'react';
 
 import clsx from 'clsx';
 import { getFormattedDate } from '../utils';
@@ -54,18 +54,28 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
       backgroundColor: red[500],
     },
+    fav: {
+      '&:hover':{
+        color: red[200],
+      }
+    }
   }));
 
 const Post = forwardRef(({ post }, ref) => {
     
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    const [color, setColor] = useState('default');
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleFavClick = () => {
+      setColor('secondary')
+    }
     return ( 
-          <Grid ref={ref} className={classes.root} item xs={12} sm={10} md={6}>
+          <Grid ref={ref} className={classes.root} item xs={12}>
             <Card className={classes.card} variant="outlined">
                 <CardHeader
                 avatar={
@@ -81,7 +91,7 @@ const Post = forwardRef(({ post }, ref) => {
                 image={'http://localhost:4000/static/' + post.image.filename}
                 />
                 <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
+                  <IconButton className={classes.fav} onClick={handleFavClick} color={color}>
                       <Favorite />
                   </IconButton>
                   { !expanded &&

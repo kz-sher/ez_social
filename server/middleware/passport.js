@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production'){
 
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
 const User = require('../models/user.model');
@@ -84,6 +85,13 @@ const initializePassport = passport => {
         clientID: process.env.OAUTH_GOOGLE_CLIENT_ID,
         clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET,
         callbackURL: 'http://localhost:3000/api/auth/oauth/google/callback'
+    }, findOrCreateUser) );
+
+    // Facebook strategy
+    passport.use('facebook', new FacebookStrategy({ 
+        clientID: process.env.OAUTH_FACEBOOK_CLIENT_ID,
+        clientSecret: process.env.OAUTH_FACEBOOK_CLIENT_SECRET,
+        callbackURL: 'http://localhost:3000/api/auth/oauth/facebook/callback'
     }, findOrCreateUser) );
 
     // JWT strategy

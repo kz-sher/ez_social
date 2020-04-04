@@ -5,8 +5,11 @@ const { isEmpty } = require('lodash');
 
 function getPostsForUser(req, res){
     const name = req.user[req.user.method].displayName
+
     Post.find({ author: name })
-        .then(posts => res.status(200).json(posts))
+        .sort({ '$natural': -1 })
+        .limit(10)
+        .then(posts => res.status(200).json({ posts }))
         .catch(err =>
             res.status(400).json({ message: "['S1']: Error fetching posts" })
         );

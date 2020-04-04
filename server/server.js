@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const PORT = 4000;
+const PORT = process.env.PORT ||4000;
 const { AuthRouter, PostRouter } = require('./routes');
 const { initializePassport } = require('./middleware/passport');
 
@@ -12,7 +12,9 @@ const { initializePassport } = require('./middleware/passport');
 initializePassport(passport);
 
 // Setup DB connection
-mongoose.connect('mongodb://127.0.0.1:27017/ezforumdb', { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/ezforumdb', { 
+    useNewUrlParser: true 
+});
 const connection = mongoose.connection;
 connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
@@ -28,3 +30,7 @@ app.use('/api/post', PostRouter);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+}

@@ -58,8 +58,8 @@ export const getPosts = (pageNum, postId) => {
 }
 
 export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) => {
-    return dispatch => {
-        axios.post('/api/post/create', postData).then(
+    return async dispatch => {
+        await axios.post('/api/post/create', postData).then(
             ({ data }) => {
                 if(data.POST_OK){
                     dispatch(togglePostModal());

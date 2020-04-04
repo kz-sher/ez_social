@@ -60,7 +60,6 @@ async function createPost(req, res){
     try {
         await postValidator.validate({ description }, { abortEarly: false });
       } catch (err) {
-        console.log(err)
         return res.status(200).json({ message: "Form error exists", formErrors: formatYupError(err), POST_OK: false });
     }
 

@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
+const path = require("path")
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const PORT = process.env.PORT ||4000;
+const PORT = process.env.PORT || 5000;
 const { AuthRouter, PostRouter } = require('./routes');
 const { initializePassport } = require('./middleware/passport');
 
@@ -12,7 +13,7 @@ const { initializePassport } = require('./middleware/passport');
 initializePassport(passport);
 
 // Setup DB connection
-mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/ezforumdb', { 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ezforumdb', { 
     useNewUrlParser: true 
 });
 const connection = mongoose.connection;
@@ -21,12 +22,16 @@ connection.once('open', function() {
 })
 
 // Setup server
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use('/static', express.static('uploads'))
 app.use('/api/auth', AuthRouter);
 app.use('/api/post', PostRouter);
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });

@@ -11,7 +11,7 @@ export const getUserInitType = () => {
 
     return dispatch => {
         setTimeout(() => {
-            axios.post('http://localhost:4000/api/auth/vtoken').then(
+            axios.post('/api/auth/vtoken').then(
                 ({ data }) => {
                     dispatch(setToken(token));
                     dispatch(setUsername(data.username))
@@ -34,7 +34,7 @@ export const getUserInitType = () => {
 
 export const signUp = ({ userData, history, setErrors, setSubmitting }) => {
     return dispatch => {
-        axios.post('http://localhost:4000/api/auth/signup', userData).then(
+        axios.post('/api/auth/signup', userData).then(
             ({ data }) => { 
                 if(data.ACC_OK){
                     history.push('/');
@@ -49,6 +49,7 @@ export const signUp = ({ userData, history, setErrors, setSubmitting }) => {
                 }
             },
             ({ response }) => {
+                console.log(response)
                 dispatch(openAlert({
                     status: 'error',
                     msg: !response ? 'Server error occured' : response.data.message
@@ -61,7 +62,7 @@ export const signUp = ({ userData, history, setErrors, setSubmitting }) => {
 
 export const signIn = ({ userData, setSubmitting }) => {
     return dispatch => {
-        axios.post('http://localhost:4000/api/auth/signin', userData).then(
+        axios.post('/api/auth/signin', userData).then(
             ({ data }) => {
                 dispatch(setToken(data.token));
                 dispatch(setUsername(data.username));

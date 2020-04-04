@@ -15,7 +15,6 @@ const signUpByLocal = async function (req, res) {
 
     let errors = {}
     let userData = req.body
-    console.log(req.body)
 
     try {
         await registerValidator.validate(userData, { abortEarly: false });
@@ -32,7 +31,6 @@ const signUpByLocal = async function (req, res) {
             }
         }
     } catch (err){
-        console.log("****************\n[From auth.controller]:\n" + err.message);
         return res.status(400).json({message: "Failed to retrieve user"});
     }
 

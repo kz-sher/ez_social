@@ -37,7 +37,7 @@ export const getPosts = (pageNum, postId) => {
 
         let cancel;
 
-        axios.get('http://localhost:4000/api/post/', params).then(
+        axios.get('/api/post/', params).then(
             ({ data }) => {
                 if(data.posts.length > 0){
                     dispatch(setPosts(data));
@@ -59,7 +59,7 @@ export const getPosts = (pageNum, postId) => {
 
 export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) => {
     return dispatch => {
-        axios.post('http://localhost:4000/api/post/create', postData).then(
+        axios.post('/api/post/create', postData).then(
             ({ data }) => {
                 if(data.POST_OK){
                     dispatch(togglePostModal());

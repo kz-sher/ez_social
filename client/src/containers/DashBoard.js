@@ -83,10 +83,9 @@ const DashBoard = ({
                 <PostSkeletonWithCover />
             }
             { postsLoading &&
-            <>
-                <PostSkeleton key='postSke1' />
-                <PostSkeleton key='postSke2' />
-            </>
+                Array.apply(0, Array(2)).map( (x, i) => {
+                    return(<PostSkeleton key={'postSke' + i} />)
+                })
             }
 
             <ListPosts posts={posts} ref={lastPostElementRef} /> 

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-// const path = require("path")
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -20,6 +20,13 @@ const connection = mongoose.connection;
 connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
+
+// Just make sure uploads folder there
+// Create a random txt file to avoid heroku error
+if (!fs.existsSync('./uploads')){
+    fs.mkdirSync('./uploads');
+    fs.closeSync(fs.openSync('random.txt', 'w'));
+}
 
 app.use(cors());
 app.use(bodyParser.json());

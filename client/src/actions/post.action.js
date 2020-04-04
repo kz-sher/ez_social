@@ -58,7 +58,6 @@ export const getPosts = (pageNum, postId) => {
 }
 
 export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) => {
-    console.log(postData)
     return dispatch => {
         axios.post('http://localhost:4000/api/post/create', postData).then(
             ({ data }) => {
@@ -70,9 +69,11 @@ export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) =>
                         dispatch(addNewPost(data.post));
                         dispatch(setPostLoading(false));
                     }, 500);
+                    setSubmitting(false);
                 } 
                 else{
                     setErrors(data.formErrors);
+                    setSubmitting(false);
                 }
             },
             ({ response })=>{

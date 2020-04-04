@@ -47,7 +47,7 @@ function getAllPosts(req, res){
 }
 
 async function createPost(req, res){
-    console.log(req)
+    
     const name = req.user[req.user.method].displayName
     const author = name;
     const description = req.body.description

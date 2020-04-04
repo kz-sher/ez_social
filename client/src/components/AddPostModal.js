@@ -53,9 +53,11 @@ const AddPostModal = ({
             
           </Typography>
           <Button
+              type="submit"
               edge="end"
               color="inherit"
               onClick={handleSubmit}
+              disabled={isSubmitting}
               >
               Post
           </Button>
@@ -84,7 +86,9 @@ const FormikForAddPostModal = withFormik({
     image: Yup.mixed().required('image is required'),
     description: Yup.string().required()
   }),
-  handleSubmit: async (values, {props, resetForm, setErrors, setSubmitting}) => {
+  // if async used on formik submit handler, it will automatically await it for promise returned
+  // which will never happen in this case as it is meant to be void function
+  handleSubmit: (values, {props, resetForm, setErrors, setSubmitting}) => {
     const { createPost } = props;
     const postData = new FormData();
     postData.append('image', values.image);

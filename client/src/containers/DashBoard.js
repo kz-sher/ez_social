@@ -88,7 +88,7 @@ const DashBoard = ({
                 })
             }
 
-            {/* <ListPosts posts={posts} ref={lastPostElementRef} />  */}
+            <ListPosts posts={posts} ref={lastPostElementRef} /> 
             {hasMorePosts &&
                 <Slide direction="up" in={true} mountOnEnter unmountOnExit>
                     <CircularProgress className={classes.postLoading} /> 
@@ -96,7 +96,7 @@ const DashBoard = ({
             }
             { !postsLoading && !hasMorePosts && !postsLoadingError &&
                 <Alert className={classes.alert} variant="filled" severity="info">
-                    No More Posts
+                    No Posts Found
                 </Alert>
             }
             { postsLoadingError && 

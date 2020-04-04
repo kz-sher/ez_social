@@ -30,7 +30,7 @@ function getAllPosts(req, res){
                 .then(posts => {
                     // get the 10th post which is the earliest post out of all
                     const postId = !isEmpty(posts) ? posts[posts.length - 1].post_id: 0
-                    res.status(200).json({ posts, postId: 0 })
+                    res.status(200).json({ posts, postId: postId })
                 })
                 .catch(err => res.status(400).json({ message: "['A11']: Error fetching posts" }))
         } 

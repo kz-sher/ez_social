@@ -79,14 +79,14 @@ const initializePassport = passport => {
     passport.use('google', new GoogleStrategy({ 
         clientID: process.env.OAUTH_GOOGLE_CLIENT_ID,
         clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/api/auth/oauth/google/callback'
+        callbackURL: '/api/auth/oauth/google/callback'
     }, findOrCreateUser) );
 
     // Facebook strategy
     passport.use('facebook', new FacebookStrategy({ 
         clientID: process.env.OAUTH_FACEBOOK_CLIENT_ID,
         clientSecret: process.env.OAUTH_FACEBOOK_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/api/auth/oauth/facebook/callback'
+        callbackURL: '/api/auth/oauth/facebook/callback'
     }, findOrCreateUser) );
 
     // JWT strategy

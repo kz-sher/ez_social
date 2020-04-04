@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
       marginTop: '3em',
-      [theme.breakpoints.down('')]: {
+      [theme.breakpoints.down('sm')]: {
         marginTop: '0.5em',
       },
       '&:last-child':{

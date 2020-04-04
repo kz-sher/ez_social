@@ -66,7 +66,7 @@ const Post = forwardRef(({ post }, ref) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [color, setColor] = useState('default');
-
+    console.log(post)
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };

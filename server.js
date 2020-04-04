@@ -32,5 +32,5 @@ app.listen(PORT, function() {
 });
 
 if(process.env.NODE_ENV === 'production'){
-    app.use(express.static('client'));
+    app.use(express.static('client/build'));
 }

@@ -1,5 +1,5 @@
 # Ez Social
-This mini project is built on top of MERN knowledge, which are MongoDB(M), Express(E), ReactJS(R) and NodeJS(N). The goal of building this is to achieve the following three IT techniques that you would probably notice and have seen in a lot of web apps and/or mobile apps. 
+This single page app(SPA) project is built on top of MERN knowledge , which are MongoDB(M), Express(E), ReactJS(R) and NodeJS(N). The goal of building this is to achieve the following three IT techniques that you would probably notice and have seen in a lot of web apps and/or mobile apps. 
 
 1. Hot Reloading
 2. Ajax Form Validation

@@ -5,7 +5,7 @@ This single page app(`SPA`) project is built on top of MERN knowledge , which ar
 2. `Ajax Form Validation`
 3. `Infinite Scrolling`
 
-Other than these, while doing research for constructing Ez Social, `Redux` & `JWT` (supported by `PassportJS` and for `OAuth` as well) are learnt to facilitate the process. `Multer` is just a nice tool for me to cope with uploading images. In regards to efficiency for infinite scrolling, Indexes in MongoDB are utilized as to support the search of recent posts and ID field lets the apps avoid loading the same post. Last but not least, team is needed.
+Other than these, while doing research for constructing Ez Social, `Redux` & `JWT` (supported by `PassportJS` and for `OAuth` as well) are learnt to facilitate the process. `Multer` is just a nice tool for me to cope with uploading images as well as a cloud storage `Cloudinary` that provides REST API for interacting with the images stored. In regards to efficiency for infinite scrolling, Indexes in MongoDB are utilized as to support the search of recent posts and ID field lets the apps avoid loading the same post. Last but not least, team is needed.
 
 ### Got question?
 > kzsherdev@gmail.com

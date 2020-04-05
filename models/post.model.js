@@ -30,7 +30,7 @@ const PostSchema = new Schema({
          required: true
       },
       imageId: {
-         type: Number,
+         type: String,
          required: true
       }
    }

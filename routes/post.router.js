@@ -8,7 +8,7 @@ const MulterMiddleware = require('../middleware/multer');
 const JwtMiddleware = passport.authenticate("jwt", { 
     session: false,
     failWithError: true
-})
+});
 
 router.get("/", JwtMiddleware, PostController.getAllPosts, handlePassportError());
 router.get("/profile", JwtMiddleware, PostController.getPostsForUser, handlePassportError());

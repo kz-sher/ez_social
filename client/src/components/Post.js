@@ -88,7 +88,7 @@ const Post = forwardRef(({ post }, ref) => {
                 />
                 <CardMedia
                 className={classes.media}
-                image={'/static/' + post.image.filename}
+                image={post.image.url}
                 />
                 <CardActions disableSpacing>
                   <IconButton className={classes.fav} onClick={handleFavClick} color={color}>

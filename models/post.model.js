@@ -28,6 +28,10 @@ const PostSchema = new Schema({
       filename: {
          type: String,
          required: true
+      },
+      imageId: {
+         type: Number,
+         required: true
       }
    }
 });

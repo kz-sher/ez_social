@@ -13,7 +13,7 @@ const { initializePassport } = require('./middleware/passport');
 initializePassport(passport);
 
 // Setup DB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ezforumdb', { 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ezsocialdb', { 
     useNewUrlParser: true 
 });
 const connection = mongoose.connection;

@@ -2,6 +2,7 @@ const Post = require('../models/post.model')
 const { postValidator } = require('../services/post.service');
 const { formatYupError } = require('../utils/error.helper');
 const { isEmpty } = require('lodash');
+const { cloudinary } = require('../middleware/cloudinary');
 
 function getPostsForUser(req, res){
     const name = req.user[req.user.method].displayName
@@ -63,19 +64,26 @@ async function createPost(req, res){
         return res.status(200).json({ message: "Form error exists", formErrors: formatYupError(err), POST_OK: false });
     }
 
-    // Create new post
-    const newPost = new Post({
-        author,
-        description,
-        image: {
-            filename: req.file.filename,
-            url: req.file.path
-        }
-    });
+    // Upload to cloudinary
+    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+        // Upload failure
+        if(err) return res.status(400).json({ message: err.message });
 
-    newPost.save()
-       .then(() => res.status(200).json({ post: newPost, message: 'Post created successfully!', POST_OK: true }))
-       .catch(err => res.status(400).json({ message: err.message }));
+        // Create new post
+        const newPost = new Post({
+            author,
+            description,
+            image: {
+                filename: req.file.filename,
+                url: result.secure_url,
+                imageId: result.public_id
+            }
+        });
+
+        newPost.save()
+        .then(() => res.status(200).json({ post: newPost, message: 'Post created successfully!', POST_OK: true }))
+        .catch(err => res.status(400).json({ message: err.message }));
+    });
 }
 
 module.exports = { getPostsForUser, createPost, getAllPosts }

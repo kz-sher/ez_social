@@ -38,8 +38,8 @@ function Main({ isInitialized, getUserInitType }) {
             {!isInitialized ?
                 <Loading />
             : <>
-                <NavBar />
                 <Grid className={classes.main} container justify="center" alignItems="center">
+                    <NavBar />
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/test" component={NotFound} />

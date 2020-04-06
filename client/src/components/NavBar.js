@@ -8,6 +8,9 @@ import { Language, ExitToApp, QuestionAnswer } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'block',
+    },
     title: {
         textDecoration: 'none',
         color: 'white',
@@ -34,7 +37,7 @@ const NavBar = ({ isLoggedIn, signOut}) => {
     }
 
     return ( 
-            <AppBar position="static">
+            <AppBar className={classes.root} position="static">
                 <Toolbar>
                     <Typography
                         className={classes.title}

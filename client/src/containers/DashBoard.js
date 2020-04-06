@@ -80,7 +80,7 @@ const DashBoard = ({
 
     return ( 
         <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={6} wrap="nowrap">
-            { !postLoading &&
+            { postLoading &&
                 <PostSkeletonWithCover />
             }
             { postsLoading &&

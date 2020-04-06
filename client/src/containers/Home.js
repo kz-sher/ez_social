@@ -6,7 +6,7 @@ import DashBoard from './DashBoard';
 
 const Home = ({ isLoggedIn }) => {
     return ( 
-        isLoggedIn ? <DashBoard /> : <SignIn />
+        !isLoggedIn ? <DashBoard /> : <SignIn />
     );
 }
 

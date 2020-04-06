@@ -15,7 +15,12 @@ import SignUpForm from '../components/SignUpForm'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop: '3em',
+        marginTop: 0,
+        paddingTop: '3em',
+        [theme.breakpoints.down('md')]: {
+            marginTop: 'auto',
+            paddingTop: '3em',
+        }
     },
     text: {
         marginTop: theme.spacing(3),

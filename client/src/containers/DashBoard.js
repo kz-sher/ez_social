@@ -14,6 +14,7 @@ import PostSkeletonWithCover from '../components/PostSkeletonWithCover';
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100%',
+        margin: 'auto'
     },
     postLoading: {
         marginTop: '1.5em',
@@ -79,7 +80,7 @@ const DashBoard = ({
 
     return ( 
         <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={6} wrap="nowrap">
-            { postLoading &&
+            { !postLoading &&
                 <PostSkeletonWithCover />
             }
             { postsLoading &&

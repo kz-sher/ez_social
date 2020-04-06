@@ -14,7 +14,12 @@ import SignInForm from '../components/SignInForm';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop: theme.spacing(3),
+        marginTop: 0,
+        paddingTop: theme.spacing(3),
+        [theme.breakpoints.down('md')]: {
+            marginTop: 'auto',
+            paddingTop: theme.spacing(3),
+        }
     },
     title: {
         marginBottom: theme.spacing(3),  

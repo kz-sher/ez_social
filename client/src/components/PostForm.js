@@ -140,12 +140,4 @@ const PostForm = ({
         </Grid>
 )}
 
-const mapStateToProps = state => {
-    return {
-        postImg: state.post.postImg,
-    }
-}
-
-export default connect(mapStateToProps, {
-        
-})(PostForm)
+export default PostForm;

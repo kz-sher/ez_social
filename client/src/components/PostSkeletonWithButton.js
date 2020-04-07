@@ -54,28 +54,18 @@ function PostSkeleton(props) {
             <Card className={classes.card} variant="outlined">
                 {props.children? props.children:''}
                 <CardHeader
-                avatar={
-                    <Skeleton animation="wave" variant="circle" width={40} height={40} />
-                }
-                title={<Skeleton animation="wave" height={20} width="40%" />}
-                subheader={<Skeleton animation="wave" height={20} width="60%" />}
-                action={
-                    <div className={classes.moreVert}>
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                        <Skeleton className={classes.moreVertDot} animation="wave" variant="circle" width={10} height={10} />
-                    </div>
-                }
+                title={<Skeleton animation="wave" height={20} width="20%" />}
                 />
                 <Skeleton animation="wave" className={classes.media} variant="rect" width="100%" height="100%" />
-                <CardActions disableSpacing>
-                    <Skeleton animation="wave" className={classes.actionButton} variant="circle" width={40} height={40} />
-                    {/* <Skeleton animation="wave" className={classes.actionButton} variant="circle" width={40} height={40} /> */}
-                    <Skeleton animation="wave" className={classes.expand} variant="circle" width={40} height={40} />
+                <CardActions>
+                    <Skeleton animation="wave" height={20} width="20%" />
                 </CardActions>
-                <CardContent>  
-                    <Skeleton animation="wave" height={20} style={{ marginBottom: 6 }} />
-                    <Skeleton animation="wave" height={20} width="80%" />
+                <CardContent>
+                    <Skeleton animation="wave" height={20} width="100%" />
+                    <Skeleton animation="wave" height={20} width="100%" />
+                    <Skeleton animation="wave" height={20} width="100%" />
+                    <Skeleton animation="wave" height={20} width="100%" />
+                    <Skeleton animation="wave" height={90} width="25%" />
                 </CardContent>
             </Card>
           </Grid>

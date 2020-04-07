@@ -1,17 +1,19 @@
 import React, { useState, forwardRef } from 'react';
-
+import { connect } from 'react-redux'
+import history from '../history';
 import clsx from 'clsx';
 import { getFormattedDate } from '../utils';
+import { deletePost } from '../actions/post.action';
 
 import {
   Grid, Fade, Card,
   CardHeader, CardMedia, CardContent,
-  CardActions, Collapse, Avatar,
-  IconButton, Typography
+  CardActions, Collapse, Avatar, Menu,
+  IconButton, Typography, MenuItem
 } from '@material-ui/core';
 import {
   Favorite, //Share,
-  ExpandMore,// MoreVert
+  ExpandMore, MoreVert
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
@@ -61,9 +63,10 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const Post = forwardRef(({ post }, ref) => {
+const Post = ({ post, deletePost}, ref) => {
     
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
     const [expanded, setExpanded] = useState(false);
     const [color, setColor] = useState('default');
     
@@ -74,15 +77,50 @@ const Post = forwardRef(({ post }, ref) => {
     const handleFavClick = () => {
       setColor('secondary')
     }
+    
+    const handleVertClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleVertClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleEditPost = () => {
+      history.push(`/post/update/${post._id}`)
+    }
+
+    const handleDeletePost = () => {
+      deletePost(post._id, history)
+    }
+
     return ( 
-          <Grid ref={ref} className={classes.root} item xs={12}>
+          <Grid className={classes.root} item xs={12}>
+            <div ref={ref}></div>
             <Card className={classes.card} variant="outlined">
                 <CardHeader
                 avatar={
-                    <Avatar aria-label="username" className={classes.avatar}>
+                    <Avatar className={classes.avatar}>
                     {post.author[0].toUpperCase()}
                     </Avatar>
                 }
+                action={
+                  <>
+                  <IconButton onClick={handleVertClick}>
+                    <MoreVert aria-controls="menu"/>
+                  </IconButton>
+                  <Menu
+                  id="menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleVertClose}
+                  >
+                    <MenuItem onClick={handleEditPost}>Edit</MenuItem>
+                    <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
+                </Menu>
+                </>
+              }
                 title={post.author}
                 subheader={getFormattedDate(post.date)}
                 />
@@ -126,6 +164,21 @@ const Post = forwardRef(({ post }, ref) => {
             </Card>
           </Grid>
      );
-})
+}
  
-export default Post;
+const connectAndForwardRef = (
+  mapStateToProps = null,
+  mapDispatchToProps = null,
+  mergeProps = null,
+  options = {},
+) => component => connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps,
+  {
+    ...options,
+    forwardRef: true,
+  },
+)(forwardRef(component));
+
+export default connectAndForwardRef(null, { deletePost })(Post);

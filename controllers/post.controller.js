@@ -4,19 +4,13 @@ const { formatYupError } = require('../utils/error.helper');
 const { isEmpty } = require('lodash');
 const { cloudinary } = require('../middleware/cloudinary');
 
-function getPostsForUser(req, res){
-    const name = req.user[req.user.method].displayName
+const getPost = (req, res) => {
+    Post.findOne({ _id: req.params.id })
+       .then(post => res.status(200).json({ post }))
+       .catch(err => res.status(400).json({ message: "['S1']: Error fetching post" }));
+};
 
-    Post.find({ author: name })
-        .sort({ '$natural': -1 })
-        .limit(10)
-        .then(posts => res.status(200).json({ posts }))
-        .catch(err =>
-            res.status(400).json({ message: "['S1']: Error fetching posts" })
-        );
-}
-
-function getAllPosts(req, res){
+const getAllPosts = (req, res) => {
     const pageNum = req.query.pageNum;
     const nPerPage = req.query.nPerPage;
     const postId = req.query.postId;
@@ -50,7 +44,7 @@ function getAllPosts(req, res){
     }, 1000)
 }
 
-async function createPost(req, res){
+const createPost = async (req, res) => {
     
     const name = req.user[req.user.method].displayName
     const author = name;
@@ -64,26 +58,80 @@ async function createPost(req, res){
         return res.status(200).json({ message: "Form error exists", formErrors: formatYupError(err), POST_OK: false });
     }
 
-    // Upload to cloudinary
-    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-        // Upload failure
-        if(err) return res.status(400).json({ message: err.message });
+    if(process.env.NODE_ENV === "production"){
+        // Upload to cloudinary
+        cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+            // Upload failure
+            if(err) return res.status(400).json({ message: err.message });
 
-        // Create new post
+            // Create new post
+            const newPost = new Post({
+                author,
+                description,
+                image: {
+                    filename: req.file.filename,
+                    url: result.secure_url,
+                    imageId: result.public_id
+                }
+            });
+
+            newPost.save()
+            .then(() => res.status(200).json({ post: newPost, message: 'Post created successfully!', POST_OK: true }))
+            .catch(err => res.status(400).json({ message: err.message }));
+        });
+    }
+    else{
         const newPost = new Post({
             author,
             description,
             image: {
                 filename: req.file.filename,
-                url: result.secure_url,
-                imageId: result.public_id
+                url: '/static/' + req.file.filename,
+                imageId: Date.now()
             }
         });
 
         newPost.save()
         .then(() => res.status(200).json({ post: newPost, message: 'Post created successfully!', POST_OK: true }))
         .catch(err => res.status(400).json({ message: err.message }));
-    });
+    }
 }
 
-module.exports = { getPostsForUser, createPost, getAllPosts }
+const updatePost = async (req, res) => {
+    
+    const name = req.user[req.user.method].displayName
+    const author = name;
+    const description = req.body.description
+    console.log(req.body)
+
+    try {
+        await postValidator.validate({ description }, { abortEarly: false });
+      } catch (err) {
+        return res.status(200).json({ message: "Form error exists", formErrors: formatYupError(err), POST_OK: false });
+    }
+
+    Post.findOneAndUpdate({ author, _id: req.params.id }, { $set:{ description } }, { new: true })
+        .then(post => {
+            if(isEmpty(post)){
+                res.status(400).json({ message: "['U1']: Unauthorized action" })
+            }
+            res.status(200).json({ post, message: "Post successfully updated" })
+        }).catch(err => res.status(400).json({ message: "['U2']: Error updating existing post" }))
+}
+
+const deletePost = (req, res) => {
+    
+    const name = req.user[req.user.method].displayName
+    const author = name;
+
+    Post.findOneAndDelete({ author, _id: req.params.id })
+        .then(post => {
+            if(isEmpty(post)){
+                res.status(400).json({ message: "['D1']: Unauthorized action" })
+            }
+            res.status(200).json({ post, message: "Post successfully deleted" })
+        }).catch(err => res.status(400).json({ message: "['D2']: Error deleting existing post" }))
+
+}
+
+module.exports = { getPost, createPost, getAllPosts, updatePost, deletePost }

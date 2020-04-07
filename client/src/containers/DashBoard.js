@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashBoard = ({ 
     posts, 
-    postLoading,
+    postCreateLoading,
     postsLoading, 
     postsLoadingError, 
     hasMorePosts, 
@@ -80,7 +80,7 @@ const DashBoard = ({
 
     return ( 
         <Grid className={classes.root} container item direction="column" justify="flex-start" alignItems="center" xs={12} sm={6} wrap="nowrap">
-            { postLoading &&
+            { postCreateLoading &&
                 <PostSkeletonWithCover />
             }
             { postsLoading &&
@@ -115,7 +115,7 @@ const DashBoard = ({
 const mapStateToProps = state => {
     return {
         posts: state.post.posts,
-        postLoading: state.post.postLoading,
+        postCreateLoading: state.post.postCreateLoading,
         postsLoading: state.post.postsLoading,
         postsLoadingError: state.post.postsLoadingError,
         hasMorePosts: state.post.hasMorePosts,

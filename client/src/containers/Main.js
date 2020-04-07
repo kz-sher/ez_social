@@ -10,6 +10,7 @@ import NavBar from '../components/NavBar';
 import GlobalAlert from '../components/GlobalAlert';
 import Home from './Home';
 import SignUp from './SignUp';
+import EditPost from './EditPost';
 import NotFound from './NotFound';
 import AuthGuard from '../components/hocs/AuthGuard';
 import Loading from '../components/Loading';
@@ -42,6 +43,7 @@ function Main({ isInitialized, getUserInitType }) {
                 <Grid className={classes.main} container justify="center" alignItems="center">
                     <Switch>
                         <Route exact path="/" component={Home} />
+                        <Route exact path="/post/update/:id" component={EditPost} />
                         <Route path="/signup" component={AuthGuard("reverse")(SignUp)} />
                         <Route component={NotFound} />
                     </Switch>

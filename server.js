@@ -25,7 +25,7 @@ connection.once('open', function() {
 // Create a random txt file to avoid heroku error
 if (!fs.existsSync('./uploads')){
     fs.mkdirSync('./uploads');
-    fs.closeSync(fs.openSync('random.txt', 'w'));
+    fs.closeSync(fs.openSync('./uploads/random.txt', 'w'));
 }
 
 app.use(cors());
@@ -40,4 +40,7 @@ app.listen(PORT, function() {
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
+}
+else{
+    app.use(express.static('client'));
 }

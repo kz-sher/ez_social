@@ -1,14 +1,12 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
+import history from '../history'
 
 import reducers from '../reducers';
 import Main from './Main';
-
-const history = createBrowserHistory();
 
 function App() {
   return (

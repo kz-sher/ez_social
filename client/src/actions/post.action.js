@@ -1,15 +1,19 @@
 import { 
     OPEN_POST_MODAL, 
     CLOSE_POST_MODAL, 
+    SET_POST,
     SET_POSTS, 
     ADD_POST,
     RESET_POSTS,
     SET_POSTS_LOADING_ERROR,
-    SET_POSTS_LOADING,
     SET_POST_LOADING,
+    SET_POSTS_LOADING,
+    SET_POST_CREATE_LOADING,
     SET_HAS_MORE_POSTS,
     SET_PAGE_NUM,
     INC_PAGE_NUM,
+    UPDATE_POST,
+    DELETE_POST,
 } from './types';
 import { openAlert } from './alert.action';
 import axios from 'axios';
@@ -20,6 +24,25 @@ export const togglePostModal = (open=false) => {
                 type: open ? OPEN_POST_MODAL : CLOSE_POST_MODAL
             })
         }
+}
+
+export const getPost = (postId) => {
+    return dispatch => {
+        dispatch(setPostLoading(true));
+        axios.get(`/api/post/post/${postId}`).then(
+            ({ data }) => {
+                dispatch(setPost(data.post));
+                dispatch(setPostLoading(false));
+            },
+            ({ response }) => {
+                dispatch(openAlert({
+                    status: 'error',
+                    msg: !response ? 'Server error occured' : response.data.message
+                }))
+                dispatch(setPostLoading(false));
+            }
+        )
+    }
 }
 
 export const getPosts = (pageNum, postId) => {
@@ -64,10 +87,10 @@ export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) =>
                 if(data.POST_OK){
                     dispatch(togglePostModal());
                     resetForm();
-                    dispatch(setPostLoading(true));
+                    dispatch(setPostCreateLoading(true));
                     setTimeout( () => {
                         dispatch(addNewPost(data.post));
-                        dispatch(setPostLoading(false));
+                        dispatch(setPostCreateLoading(false));
                     }, 500);
                     setSubmitting(false);
                 } 
@@ -82,6 +105,55 @@ export const createPost = ({ postData, resetForm, setErrors, setSubmitting }) =>
                     msg: !response ? 'Server error occured' : response.data.message
                 }))
                 setSubmitting(false);
+            });
+    }
+}
+
+export const updatePost = ({ description, postId, history, setSubmitting }) => {
+    return async dispatch => {
+        await axios.patch(`/api/post/update/${postId}`, { description }).then(
+            ({ data }) => {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: data.post
+                });
+                setSubmitting(false);
+                setPost(data.post);
+                history.push(`/post/update/${data.post._id}`);
+                dispatch(openAlert({
+                    status: 'success',
+                    msg: data.message
+                }))
+            },
+            ({ response })=>{
+                dispatch(openAlert({
+                    status: 'error',
+                    msg: !response ? 'Server error occured' : response.data.message
+                }))
+                setSubmitting(false);
+            });
+    }
+}
+
+export const deletePost = (postId, history) => {
+    return async dispatch => {
+        await axios.delete(`/api/post/delete/${postId}`).then(
+            ({ data }) => {
+                dispatch({
+                    type: DELETE_POST,
+                    payload: postId
+                });
+                history.push('/');
+                dispatch(openAlert({
+                    status: 'success',
+                    msg: data.message
+                }))
+            },
+            ({ response })=>{
+                dispatch(openAlert({
+                    status: 'error',
+                    msg: !response ? 'Server error occured' : response.data.message
+                }))
             });
     }
 }
@@ -120,6 +192,24 @@ export const setPostLoading = isLoading => {
         });
     };
 };
+
+export const setPostCreateLoading = isLoading => {
+    return dispatch => {
+        dispatch({
+            type: SET_POST_CREATE_LOADING,
+            payload: isLoading
+        });
+    };
+};
+
+export const setPost = post => {
+    return dispatch => {
+        dispatch({
+            type: SET_POST,
+            payload: post
+        });
+    }
+}
 
 export const setPosts = posts => {
     return dispatch => {

@@ -87,7 +87,7 @@ const Post = ({ post, deletePost}, ref) => {
     };
 
     const handleEditPost = () => {
-      history.push(`/post/update/${post._id}`)
+      history.push(`/post/${post._id}`)
     }
 
     const handleDeletePost = () => {

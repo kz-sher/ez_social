@@ -43,7 +43,7 @@ function Main({ isInitialized, getUserInitType }) {
                 <Grid className={classes.main} container justify="center" alignItems="center">
                     <Switch>
                         <Route exact path="/" component={Home} />
-                        <Route exact path="/post/update/:id" component={EditPost} />
+                        <Route exact path="/post/:id" component={EditPost} />
                         <Route path="/signup" component={AuthGuard("reverse")(SignUp)} />
                         <Route component={NotFound} />
                     </Switch>

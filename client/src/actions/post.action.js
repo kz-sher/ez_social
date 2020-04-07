@@ -119,7 +119,7 @@ export const updatePost = ({ description, postId, history, setSubmitting }) => {
                 });
                 setSubmitting(false);
                 setPost(data.post);
-                history.push(`/post/update/${data.post._id}`);
+                history.push(`/post/${data.post._id}`);
                 dispatch(openAlert({
                     status: 'success',
                     msg: data.message

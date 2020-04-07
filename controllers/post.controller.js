@@ -11,19 +11,19 @@ const getPost = (req, res) => {
 };
 
 const getAllPosts = (req, res) => {
-    const pageNum = req.query.pageNum;
-    const nPerPage = req.query.nPerPage;
+    const pageNum = parseInt(req.query.pageNum);
+    const nPerPage = parseInt(req.query.nPerPage);
     const postId = req.query.postId;
-    
+
     setTimeout(() => {
         if(postId == -1){
             // To get latest posts
             Post.find()
-                .limit(10)
-                .sort({ '$natural': -1 })
+                .sort({ 'post_id': -1 })
+                .limit(nPerPage)
                 .skip(  ( pageNum - 1 ) * nPerPage )
                 .then(posts => {
-                    // get the 10th post which is the earliest post out of all
+                    // get the last post which is the earliest post out of all
                     const postId = !isEmpty(posts) ? posts[posts.length - 1].post_id: 0
                     res.status(200).json({ posts, postId: postId })
                 })
@@ -32,9 +32,13 @@ const getAllPosts = (req, res) => {
         else{
             // To continue getting older posts from the last recent post he/she read
             if(postId > 0){
-                Post.find({ 'post_id':{'$lt': postId, '$gte': postId - 10 }})
-                    .sort({ '$natural': -1 })
-                    .then(posts => res.status(200).json({ posts, postId: postId - 10 }))
+                Post.find({ 'post_id':{'$lt': postId}})
+                    .sort({ 'post_id': -1 })
+                    .limit(nPerPage)
+                    .then(posts => {
+                        const postId = !isEmpty(posts) ? posts[posts.length - 1].post_id: 0
+                        res.status(200).json({ posts, postId: postId })
+                    })
                     .catch(err => res.status(400).json({ message: "['A12']: Error fetching posts" }))
             }
             else{

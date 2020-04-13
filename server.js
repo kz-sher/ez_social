@@ -14,8 +14,10 @@ initializePassport(passport);
 
 // Setup DB connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ezsocialdb', { 
+    useUnifiedTopology: true,
+    useCreateIndex: true,
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
 });
 const connection = mongoose.connection;
 connection.once('open', function() {
